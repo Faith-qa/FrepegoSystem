@@ -39,6 +39,43 @@ const styles = StyleSheet.create({
         fontSize: 12,
         color: 'gray',
     },
+    addItemContainer:{
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: '#1976D2', // Blue background color
+        borderRadius: 50, // Rounded corners
+        padding: 10,
+        width: 120,
+
+    },
+    quantityContainer:{
+        flexDirection: 'row',
+        //: 'absolute',  // Make it absolutely positioned
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: 'green',//'#1976D2', // Blue background color
+        borderRadius: 30, // Rounded corners
+        padding: 2,
+        width: 100,
+        height: 30//
+    },
+    button: {
+        backgroundColor: 'green',//'#1976D2', // Match background color
+        padding: 2,
+        borderRadius: 30,
+    },
+    buttonText: {
+        fontSize: 16,
+        color: '#fff',
+        fontWeight: 'bold',
+    },
+    quantityText: {
+        fontSize: 16,
+        color: '#fff',
+        marginHorizontal: 10,
+    },
+
 
 });
 

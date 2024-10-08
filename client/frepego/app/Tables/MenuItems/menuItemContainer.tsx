@@ -1,6 +1,19 @@
 import MenuItemScreen from "@/app/Tables/MenuItems/MenuItemScreen";
+import {useScrollViewOffset} from "react-native-reanimated";
+import {useState} from "react";
 
 const MenuItemContainer: React.FC =() =>{
+    
+    const [openAddItemModal, setOpenAddItemModal] = useState(false)
+    const [selectedItem, setSelectedItem] = useState(null)
+    const openAdd = (id: any) =>{
+        setSelectedItem(id)
+        setOpenAddItemModal(true)
+    }
+    const closeAdd = () => {
+        setSelectedItem(null)
+        setOpenAddItemModal(false)
+    }
 
     const data = [
         {
@@ -32,11 +45,13 @@ const MenuItemContainer: React.FC =() =>{
             image: 'https://images.pexels.com/photos/101533/pexels-photo-101533.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2', // Replace with actual image path or URL
         },
     ];
+    
+    
 
     /*TODO: PULL MENU ITEM DATA FROM DATABASE*/
     /*TODO: functionality for add menu item*/
     return(
-        <MenuItemScreen data={data}/>
+        <MenuItemScreen selectedItem={selectedItem} data={data} openAddItem={openAddItemModal} setOpenAddItem={openAdd} closeAddItem={closeAdd}/>
     )
 }
 
