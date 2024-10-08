@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="c8fad361-bc99-409a-b45b-7ae394cdf0a7" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/../.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frepego/app/Tables/MenuItems/MenuItemScreen.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frepego/app/Tables/MenuItems/_layout.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frepego/app/Tables/MenuItems/index.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frepego/app/Tables/MenuItems/menuItemContainer.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frepego/app/Tables/MenuItems/styles.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frepego/app/Tables/TableSelectionContainer.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frepego/app/Tables/TableSelectionScreen.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frepego/app/Tables/_layout.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frepego/app/Tables/index.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frepego/app/Tables/styles.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frepego/components/Collapsible.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frepego/components/ExternalLink.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frepego/components/HelloWave.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frepego/components/ParallaxScrollView.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frepego/components/ThemedText.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frepego/components/ThemedView.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frepego/components/__tests__/ThemedText-test.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frepego/components/__tests__/__snapshots__/ThemedText-test.tsx.snap" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frepego/components/navigation/TabBarIcon.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frepego/src/stylesheet/styles.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frepego/src/stylesheet/test.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frepego.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../server/barRestaurant/schema.py" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="TypeScript File" />
+        <option value="TypeScript JSX File" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="KubernetesApiProvider"><![CDATA[{
+  "isMigrated": true
+}]]></component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 7
+}]]></component>
+  <component name="ProjectId" id="2n4nEYBI8ttLn0sa8kpLi5nRyxx" />
+  <component name="ProjectViewState">
+    <option name="autoscrollToSource" value="true" />
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+    <option name="showMembers" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "main",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "/Users/faithokoth/IdeaProjects/frepego/client",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "npm.start.executor": "Run",
+    "ts.external.directory.path": "/Users/faithokoth/IdeaProjects/frepego/client/frepego/node_modules/typescript/lib",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/frepego/app/Tables" />
+      <recent name="$PROJECT_DIR$/frepego/src" />
+      <recent name="$PROJECT_DIR$/frepego/app/stylesheet" />
+      <recent name="$PROJECT_DIR$/frepego/app" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="start" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
+      <package-json value="$PROJECT_DIR$/frepego/package.json" />
+      <command value="run" />
+      <scripts>
+        <script value="start" />
+      </scripts>
+      <node-interpreter value="project" />
+      <envs />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="npm.start" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="c8fad361-bc99-409a-b45b-7ae394cdf0a7" name="Changes" comment="" />
+      <created>1728241105446</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1728241105446</updated>
+      <workItem from="1728241106510" duration="23960000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>
