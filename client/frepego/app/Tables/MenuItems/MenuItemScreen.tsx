@@ -5,6 +5,8 @@ import {Icon} from "react-native-elements";
 import { useRoute } from '@react-navigation/native';
 import ProductItem from "@/app/Tables/MenuItems/Item";
 import {CartItem} from "@/app/Tables/MenuItems/menuItemContainer";
+import {useState} from "react";
+import CartModal from "@/app/Tables/MenuItems/CartModal";
 
 
 
@@ -29,10 +31,13 @@ const MenuItemScreen: React.FC<NewProps> = (
 
     }
 )=>{
-
-    //const route = useRoute();
-    //const { tableNumber } = route.params;
-
+    const [openCart, setOpenCart] = useState(false)
+    const openingCart = ()=>{
+        setOpenCart(true)
+    }
+    const closeCart = () =>{
+        setOpenCart(false)
+    }
 
     return(
         <View style={s.container}>
@@ -45,10 +50,11 @@ const MenuItemScreen: React.FC<NewProps> = (
             />
             {/* View Cart Button */}
             {cart.length > 0 && (
-                <TouchableOpacity style={s.cartButton} onPress={() => alert('View Cart')}>
-                    <Text style={s.cartText}>View Cart • KSh{getTotalPrice()}.00</Text>
+                <TouchableOpacity style={s.cartButton} onPress={() => openingCart()}>
+                    <Text style={s.cartText}>View Orders • KSh{getTotalPrice()}.00</Text>
                 </TouchableOpacity>
             )}
+            <CartModal addItemToCart={addItemToCart} cart={cart} closeCart={closeCart} openCart={openCart} removeItemFromCart={removeItemFromCart}/>
         </View>
     )
 }

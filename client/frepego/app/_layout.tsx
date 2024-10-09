@@ -19,6 +19,8 @@ export default function RootLayout() {
                       title:"create an Order"
                   }}
               />
+              <Drawer.Screen
+                  name={"Tables"}/>
 
           </Drawer>
       </GestureHandlerRootView></Provider>

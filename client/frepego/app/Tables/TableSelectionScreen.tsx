@@ -11,16 +11,17 @@ const TableSelectionScreen:React.FC<NewProps> = ({
                                                  }) =>{
     const navigation = useNavigation();
     //onPress={/*() => navigation.navigate('Menu', { tableNumber: item.number })*/}
-    //<Link href={{ pathname: "/Tables/MenuItems/", params: { tableNumber: item.number } }} asChild>
 
     const renderTable = ({ item }: { item: any }) => (
+        <Link href={{ pathname: "/Tables/MenuItems/", params: { tableNumber: item.number } }} asChild>
+
         <TouchableOpacity
             style={s.tableContainer}
-            onPress={()=> router.push('/Tables/MenuItems/')}
+            //onPress={()=> router.push('/Tables/MenuItems/')}
         >
             <Text style={s.tableCapacity}>{item.capacity}</Text>
             <Text style={s.tableNumber}>{item.number}</Text>
-        </TouchableOpacity>
+        </TouchableOpacity></Link>
     );
 
     return(
