@@ -1,5 +1,4 @@
 import MenuItemScreen from "@/app/Tables/MenuItems/MenuItemScreen";
-import {useScrollViewOffset} from "react-native-reanimated";
 import {useState} from "react";
 export interface CartItem {
     id: string;
@@ -10,9 +9,6 @@ export interface CartItem {
 }
 
 const MenuItemContainer: React.FC =() =>{
-    
-    const [openAddItemModal, setOpenAddItemModal] = useState(false)
-    const [selectedItem, setSelectedItem] = useState(null)
     const [cart, setCart] = useState<CartItem[]>([])
 
     //add item to cart
@@ -49,14 +45,14 @@ const MenuItemContainer: React.FC =() =>{
     const getTotalPrice = () => {
         return cart.reduce((total, item) => total + item.price * item.quantity, 0);
     };
-    const openAdd = (id: any) =>{
+    /*const openAdd = (id: any) =>{
         setSelectedItem(id)
         setOpenAddItemModal(true)
     }
     const closeAdd = () => {
         setSelectedItem(null)
         setOpenAddItemModal(false)
-    }
+    }*/
     //handle cart
 
 
