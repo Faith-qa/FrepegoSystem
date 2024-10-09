@@ -3,11 +3,13 @@ import {hidden} from "colorette";
 import {Drawer} from "expo-router/drawer";
 import React from "react";
 import {GestureHandlerRootView} from "react-native-gesture-handler";
-import {FontAwesome} from "@expo/vector-icons";
-import {View, Image, Text, TouchableOpacity} from "react-native";
-import s from '@/src/stylesheet/styles'
+import {store} from "@/store/store";
+import {Provider, useSelector} from 'react-redux';
+
 export default function RootLayout() {
   return (
+      <Provider store={store}>
+
       <GestureHandlerRootView>
           <Drawer>
               <Drawer.Screen
@@ -19,7 +21,7 @@ export default function RootLayout() {
               />
 
           </Drawer>
-      </GestureHandlerRootView>
+      </GestureHandlerRootView></Provider>
 
     /*<Stack>
       <Stack.Screen name="index"  />

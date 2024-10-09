@@ -1,22 +1,60 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {Button, Image, Text, TouchableOpacity, View} from "react-native";
 import {Icon} from "react-native-elements";
-import s from './styles'
+import s from './styles';
+import {useDispatch, useSelector} from "react-redux";
+import {CartItem} from "@/app/Tables/MenuItems/menuItemContainer";
 
 
-const ProductItem = ({item}: {item: any}) => {
+interface NewProps{
+    cart: CartItem[],
+    item: any,
+    removeItemFromCart: (item:CartItem)=> void,
+    addItemToCart:(item:CartItem, quantity:number)=>void,
+}
+const ProductItem:React.FC<NewProps> = ({
+    item,
+    cart,
+    addItemToCart,
+                                            removeItemFromCart
+
+                              }) => {
     const [isSelected, setIsSelected] = useState(false)
     const [quantity, setQuantity] = useState(0)
 
+    useEffect(() => {
+        const cartItem = cart.find(cartItem=> cartItem.id === item.id)
+        if (cartItem) {
+            setIsSelected(true)
+            setQuantity(cartItem.quantity)
+        } else {
+            setIsSelected(false);
+            setQuantity(0)
+        }
+    }, [cart, item.id]);
+
+
+
     const handleSelectedItem = () => {
         setIsSelected(true)
-        setQuantity(1)
+        setQuantity(1);
+        addItemToCart(item, 1);
+
     }
 
-    const incrementQuantity = () => setQuantity( quantity + 1)
+    const incrementQuantity = () => {
+        const newQuantity = quantity + 1
+        setQuantity(newQuantity)
+        addItemToCart(item, 1)
+    }
     const decrementQuantity = ()=>{
-        if(quantity > 1) setQuantity(quantity -1)
-        else setIsSelected(false)
+        if (quantity > 1) {
+            setQuantity(quantity - 1);
+            removeItemFromCart(item); // Decrease quantity by 1
+        } else {
+            setIsSelected(false);
+            removeItemFromCart(item); // Remove item from cart
+        }
     }
 
     return(
@@ -24,7 +62,7 @@ const ProductItem = ({item}: {item: any}) => {
             <Image source={{ uri: item.image }} style={s.itemImage} />
             <View style={s.itemContent}>
                 <Text style={s.itemTitle}>{item.title}</Text>
-                <Text style={s.itemPrice}>{item.price}</Text>
+                <Text style={s.itemPrice}>Ksh {item.price}</Text>
                 <Text style={s.itemDescription}>{item.description}</Text>
             </View>
             {isSelected ? (<View style={s.quantityContainer}>
