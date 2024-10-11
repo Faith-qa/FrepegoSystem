@@ -1,4 +1,4 @@
-import { Stack } from "expo-router";
+import {Redirect, Stack} from "expo-router";
 import {hidden} from "colorette";
 import {Drawer} from "expo-router/drawer";
 import React from "react";
@@ -6,13 +6,24 @@ import {GestureHandlerRootView} from "react-native-gesture-handler";
 import {store} from "@/store/store";
 import {Provider, useSelector} from 'react-redux';
 import {DrawerContentScrollView, DrawerItem, DrawerItemList} from "@react-navigation/drawer";
-import {View, StyleSheet} from "react-native";
+import {View, StyleSheet, Text} from "react-native";
 import ProfilePicContainer from "@/componentsUi/ProfilePic";
+import {useSession} from "@/app/authContext";
 
-export default function RootLayout() {
+export default function AppLayout() {
+    const {session, isLoading} = useSession()
+
+    /*if(isLoading) {
+        return <Text>Loading ...</Text>
+    }
+    //only require authentication withing the (app) groups as users
+    // need to be able to access the (auth) group and sign in
+
+    if(!session) {
+        return <Redirect href={"/sign-in"}/>
+    }*/
   return (
       <Provider store={store}>
-
       <GestureHandlerRootView>
           <Drawer
               drawerContent={(props)=><CustomDrawerContent {...props}/>}
@@ -30,6 +41,9 @@ export default function RootLayout() {
                       drawerLabel: "Bar and Restaurant",
                       title: 'create an order'
                   }}
+              />
+              <Drawer.Screen
+                  name={"Dashboard"}
               />
 
           </Drawer>
