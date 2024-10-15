@@ -43,9 +43,12 @@ export default function AppLayout() {
                   }}
               />
               <Drawer.Screen
-                  name={"Dashboard"}
+                  name={"Dash_tables"}
+                  options={{
+                      drawerLabel: "Tables",
+                      title: 'Tables'
+                  }}
               />
-
           </Drawer>
       </GestureHandlerRootView></Provider>
 
