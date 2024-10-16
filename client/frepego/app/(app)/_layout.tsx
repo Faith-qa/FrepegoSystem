@@ -63,7 +63,7 @@ export default function AppLayout() {
 
 function CustomDrawerContent(props:any){
     return(
-    <DrawerContentScrollView {...props} >
+    <DrawerContentScrollView {...props} style={{padding: 10}}>
         <ProfilePicContainer/>
         <View
             style={{
@@ -73,7 +73,7 @@ function CustomDrawerContent(props:any){
             }}
         />
         <DrawerItemList {...props} />
-        <DrawerItem label="Help" onPress={() => alert('Link to help')} />
+        <DrawerItem label="Help" onPress={() => alert('Link to help')}/>
     </DrawerContentScrollView>)
 
 }
