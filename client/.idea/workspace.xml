@@ -5,33 +5,29 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c8fad361-bc99-409a-b45b-7ae394cdf0a7" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/../.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frepego/app/Tables/MenuItems/MenuItemScreen.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frepego/app/Tables/MenuItems/_layout.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frepego/app/Tables/MenuItems/index.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frepego/app/Tables/MenuItems/menuItemContainer.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frepego/app/Tables/MenuItems/styles.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frepego/app/Tables/TableSelectionContainer.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frepego/app/Tables/TableSelectionScreen.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frepego/app/Tables/_layout.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frepego/app/Tables/index.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frepego/app/Tables/styles.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frepego/components/Collapsible.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frepego/components/ExternalLink.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frepego/components/HelloWave.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frepego/components/ParallaxScrollView.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frepego/components/ThemedText.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frepego/components/ThemedView.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frepego/components/__tests__/ThemedText-test.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frepego/components/__tests__/__snapshots__/ThemedText-test.tsx.snap" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frepego/components/navigation/TabBarIcon.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frepego/src/stylesheet/styles.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frepego/src/stylesheet/test.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../frepego.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../server/barRestaurant/schema.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frepego/app/(app)/Bookings/_layout.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frepego/app/(app)/Bookings/index.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frepego/app/(app)/Bookings/styles.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frepego/app.json" beforeDir="false" afterPath="$PROJECT_DIR$/frepego/app.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frepego/app/(app)/Dashboard/SummaryCharts.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frepego/app/(app)/Dashboard/SummaryCharts.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frepego/app/(app)/Dashboard/styles.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frepego/app/(app)/Dashboard/styles.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frepego/components/Collapsible.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frepego/components/ExternalLink.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frepego/components/HelloWave.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frepego/components/ParallaxScrollView.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frepego/components/ThemedText.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frepego/components/ThemedView.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frepego/components/__tests__/ThemedText-test.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frepego/app/(app)/Bookings/BookingsScreen.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frepego/components/__tests__/__snapshots__/ThemedText-test.tsx.snap" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frepego/components/navigation/TabBarIcon.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frepego/constants/Colors.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frepego/hooks/useColorScheme.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frepego/hooks/useColorScheme.web.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frepego/hooks/useThemeColor.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frepego/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/frepego/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frepego/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/frepego/package.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -49,15 +45,18 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
-  <component name="KubernetesApiProvider"><![CDATA[{
-  "isMigrated": true
-}]]></component>
+  <component name="KubernetesApiProvider">{
+  &quot;isMigrated&quot;: true
+}</component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 7
-}]]></component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 7
+}</component>
   <component name="ProjectId" id="2n4nEYBI8ttLn0sa8kpLi5nRyxx" />
   <component name="ProjectViewState">
     <option name="autoscrollToSource" value="true" />
@@ -65,29 +64,30 @@
     <option name="showLibraryContents" value="true" />
     <option name="showMembers" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "main",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "/Users/faithokoth/IdeaProjects/frepego/client",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "npm.start.executor": "Run",
-    "ts.external.directory.path": "/Users/faithokoth/IdeaProjects/frepego/client/frepego/node_modules/typescript/lib",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/faithokoth/IdeaProjects/frepego/client&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;npm.start.executor&quot;: &quot;Run&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;/Users/faithokoth/IdeaProjects/frepego/client/frepego/node_modules/typescript/lib&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/frepego/app/Tables" />
-      <recent name="$PROJECT_DIR$/frepego/src" />
-      <recent name="$PROJECT_DIR$/frepego/app/stylesheet" />
+      <recent name="$PROJECT_DIR$/frepego/app/(app)" />
       <recent name="$PROJECT_DIR$/frepego/app" />
+      <recent name="$PROJECT_DIR$/frepego/assets/HomeAssets" />
+      <recent name="$PROJECT_DIR$/frepego/assets" />
+      <recent name="$PROJECT_DIR$/frepego/componentsUi/HomePage/assets" />
     </key>
   </component>
   <component name="RunManager">
@@ -116,10 +116,33 @@
       <option name="presentableId" value="Default" />
       <updated>1728241105446</updated>
       <workItem from="1728241106510" duration="23960000" />
+      <workItem from="1728365238647" duration="62103000" />
+      <workItem from="1728991302159" duration="3850000" />
+      <workItem from="1728997483010" duration="4107000" />
+      <workItem from="1729008580036" duration="327000" />
+      <workItem from="1729008909994" duration="1602000" />
+      <workItem from="1729010534280" duration="6727000" />
+      <workItem from="1729018636978" duration="3127000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/frepego/app/(app)/Tables/MenuItems/AddItem/styles.ts</url>
+          <line>13</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/frepego/app/(app)/Dashboard/DashboardScreen.tsx</url>
+          <line>14</line>
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

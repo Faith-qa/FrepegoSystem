@@ -23,7 +23,7 @@ const SummaryCharts: React.FC = () =>{
                     Orders Summary
                 </Text>
                 <Text style={s.description}>Lorem ipsum dolor sit amet, consectetur</Text>
-                <View>
+                <View style={s.progressContainer}>
                     {/* Progress Circle*/}
                     <Progress.Circle
                         size={120}
