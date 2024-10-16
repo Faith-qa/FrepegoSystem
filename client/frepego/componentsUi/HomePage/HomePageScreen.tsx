@@ -9,7 +9,7 @@ interface NewProps{
 const HomePageScreen:React.FC<NewProps> = ({services}) =>{
     return( <View style={s.container}>
         <ImageBackground
-            source={require('@/assets/HomeAssets/background.png')} // Replace with the background image link
+            source={{uri: "https://images.unsplash.com/photo-1524947820859-81b71fe05edc?q=80&w=2833&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"}} // Replace with the background image link
             style={s.background}
         >
             <View style={s.overlay}>
@@ -23,7 +23,7 @@ const HomePageScreen:React.FC<NewProps> = ({services}) =>{
                     {services.map(service => (
                         <Link href={service.path} key={service.id} asChild>
                             <TouchableOpacity style={s.serviceCard}>
-                            <Image source={service.image} style={s.serviceImage}/>
+                            <Image source={{uri: service.image}} style={s.serviceImage}/>
                             <Text style={s.serviceText}>{service.name}</Text></TouchableOpacity>
                         </Link>
                     ))}
