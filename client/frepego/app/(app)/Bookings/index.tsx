@@ -1,3 +1,3 @@
-import BookingsScreen from "@/app/(app)/Bookings/BookingsScreen";
+import Bookingscreate from "@/app/(app)/Bookings/Bookingscreate";
 
-export default BookingsScreen;
+export default Bookingscreate;

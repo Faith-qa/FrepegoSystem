@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, StyleSheet, Alert } from "react-native";
+import {View, Text, TouchableOpacity, StyleSheet, Alert, ImageBackground} from "react-native";
 import s from "@/app/(app)/Tables/MenuItems/styles";
 import React, { useState } from "react";
 import { Icon } from "react-native-elements";
@@ -143,6 +143,14 @@ const DatesUi: React.FC = () => {
                     <Text>Add another room</Text>
                 </TouchableOpacity>
             </View>
+            <View
+                style={{
+                    padding:10,
+                    borderBottomColor: 'black',
+                    borderBottomWidth: StyleSheet.hairlineWidth,
+                    //elevation: 3,
+                }}
+            />
             <View>
                 <Text style={styles.titleText}>Select dates</Text>
                 <View style={styles.checkinCheckoutCon}>
@@ -180,6 +188,13 @@ const DatesUi: React.FC = () => {
                         )}
                     </View>
                 </View>
+                <View
+                    style={{
+                        padding:10,
+                        borderBottomColor: 'black',
+                        borderBottomWidth: StyleSheet.hairlineWidth,
+                    }}
+                />
 
                 <View style={{ margin: 10 }}>
                     <Text style={styles.titleText}>Which room would you like to book?</Text>
@@ -193,9 +208,18 @@ const DatesUi: React.FC = () => {
                         <Picker.Item label="Standard" value="Standard" />
                     </Picker>
                 </View>
+                {isBookingComplete() && (
 
-                {isBookingComplete() && (<View>
-                    <TouchableOpacity style={styles.cartButton} onPress={() => Alert.alert('Booking Created')}>
+                    <View>
+                        <View
+                            style={{
+                                padding:10,
+                                borderBottomColor: 'black',
+                                borderBottomWidth: StyleSheet.hairlineWidth,
+                                //elevation: 3,
+                            }}
+                        />
+                    <TouchableOpacity style={styles.cartButton} onPress={() => alert('Booking Created')}>
                         <Text style={s.cartText}>Create Booking</Text>
                     </TouchableOpacity>
                 </View>)}
@@ -206,7 +230,7 @@ const DatesUi: React.FC = () => {
 
 const styles = StyleSheet.create({
     titleText: {
-        alignSelf: "center",
+        alignSelf: "flex-start",
         padding: 16,
         fontSize: 16,
         fontWeight: "bold",
@@ -237,6 +261,11 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
+    background: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+    }
 });
 
 export default DatesUi;
