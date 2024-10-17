@@ -39,5 +39,10 @@ const styles = StyleSheet.create({
         color: 'gray',
         marginBottom: 8,
     },
+    background: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+    }
 });
 export default styles;

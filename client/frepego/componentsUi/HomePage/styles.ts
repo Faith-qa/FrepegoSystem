@@ -44,7 +44,7 @@ const styles = StyleSheet.create({ container: {
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.8,
         shadowRadius: 5,
-        elevation: 4,
+        elevation: 10,
     },
     serviceImage: {
         width: "100%",
@@ -53,7 +53,7 @@ const styles = StyleSheet.create({ container: {
         borderTopLeftRadius: 15,
         //borderTopRightRadius:15,
         marginBottom: 10,
-       elevation: 6,
+       //elevation: 6,
         shadowColor: '#000',
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.8,
@@ -64,6 +64,7 @@ const styles = StyleSheet.create({ container: {
         fontSize: 16,
         color: '#333',
         fontWeight: '600',
+        padding:10
     }
 });
 export default styles;

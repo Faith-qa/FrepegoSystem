@@ -1,5 +1,7 @@
 import {useState} from "react";
 import DashTableScreen from "@/app/(app)/Dash_tables/DashTableScreen";
+import {ImageBackground} from "react-native";
+import s from "@/app/(app)/Tables/styles";
 
 const DashTableContainer:React.FC = () => {
     const [items] = useState([
@@ -31,11 +33,13 @@ const DashTableContainer:React.FC = () => {
 
     const tableName = ["orders", "users", "rooms_booked"]
     return(
-<>
+        <ImageBackground
+            source={{uri: "https://images.unsplash.com/photo-1524947820859-81b71fe05edc?q=80&w=2833&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"}} // Replace with the background image link
+            style={s.background}>
     <DashTableScreen items={items} tableName={tableName[0]}/>
     <DashTableScreen items={items} tableName={tableName[1]}/>
     <DashTableScreen items={items} tableName={tableName[2]}/>
-</>
+        </ImageBackground>
     )
 }
 

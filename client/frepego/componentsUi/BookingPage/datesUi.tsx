@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, StyleSheet, Alert } from "react-native";
+import {View, Text, TouchableOpacity, StyleSheet, Alert, ImageBackground} from "react-native";
 import s from "@/app/(app)/Tables/MenuItems/styles";
 import React, { useState } from "react";
 import { Icon } from "react-native-elements";
@@ -261,6 +261,11 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
+    background: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+    }
 });
 
 export default DatesUi;
