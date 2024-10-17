@@ -17,10 +17,10 @@ const DashboardContainer: React.FC = () =>{
             renderItem={null}
             // Provide the DashboardScreen as the header
             ListHeaderComponent={
-                <>
+                <View>
                     <DashboardScreen data={data} />{/* The main dashboard content */}
-                    <SummaryCharts />{/* Your summary charts below */}
-                </>
+                    <SummaryCharts />{/*Your summary charts below */}
+                </View>
             }
             keyExtractor={(item, index) => index.toString()}
             contentContainerStyle={s.container}
