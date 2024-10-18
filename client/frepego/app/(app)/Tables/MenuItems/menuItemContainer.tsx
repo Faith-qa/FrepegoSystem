@@ -1,5 +1,7 @@
 import MenuItemScreen from "@/app/(app)/Tables/MenuItems/MenuItemScreen";
 import {useState} from "react";
+import {ImageBackground} from "react-native";
+import s from "@/app/(app)/Tables/styles";
 export interface CartItem {
     id: string;
     name: string;

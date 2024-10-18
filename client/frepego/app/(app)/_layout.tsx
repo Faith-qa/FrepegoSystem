@@ -14,7 +14,7 @@ import {LinearGradient} from "expo-linear-gradient";
 export default function AppLayout() {
     const {session, isLoading} = useSession()
 
-    /*if(isLoading) {
+    if(isLoading) {
         return <Text>Loading ...</Text>
     }
     //only require authentication withing the (app) groups as users
@@ -22,7 +22,7 @@ export default function AppLayout() {
 
     if(!session) {
         return <Redirect href={"/sign-in"}/>
-    }*/
+    }
   return (
       <Provider store={store}>
       <GestureHandlerRootView>
