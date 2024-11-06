@@ -11,7 +11,7 @@ class MenuItem(models.Model):
 
 
     def __str__(self):
-        return self.name
+        return self.title
 
 
 class Table(models.Model):
@@ -37,4 +37,4 @@ class OrderItem(models.Model):
     quantity = models.PositiveIntegerField()
 
     def __str__(self):
-        return f"{self.quantity} x {self.menu_item.name}"
+        return f"{self.quantity} x {self.menu_item.title}"
