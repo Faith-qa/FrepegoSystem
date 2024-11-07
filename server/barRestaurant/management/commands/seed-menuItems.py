@@ -3,7 +3,7 @@ from barRestaurant.models import MenuItem
 import pandas as pd
 import os
 
-csv_filepath = os.path.join(os.path.dirname(__file__), 'menuItems.csv')
+csv_filepath = os.path.join(os.path.dirname(__file__), '')
 
 class Command(BaseCommand):
     help = "seed the database with data from csv file"
