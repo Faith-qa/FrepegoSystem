@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/4.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
-
+from datetime import timedelta
 from pathlib import Path
 import django
 import environ
@@ -46,10 +46,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'graphene_django',
     'graphql_jwt.refresh_token.apps.RefreshTokenConfig',
-    'graphql_auth',
-    'django_filters',
+    #'graphql_auth',
+    #'django_filters',
     'barRestaurant',
-    #'users'
+    'users'
 ]
 
 MIDDLEWARE = [
@@ -140,24 +140,28 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 GRAPHENE = {
-    'SCHEMA': 'barRestaurant.schema.schema',
+    'SCHEMA': 'frepegoSystem.schema.schema',
     'MIDDLEWARE':[
         'graphql_jwt.middleware.JSONWebTokenMiddleware',
     ]
 }
 
 AUTHENTICATION_BACKENDS = [
-    #'graphql_jwt.backends.JSONWebTokenBackend',
+    'graphql_jwt.backends.JSONWebTokenBackend',
     'django.contrib.auth.backends.ModelBackend',
-    "graphql_auth.backends.GraphQLAuthBackend",
+    #"graphql_auth.backends.GraphQLAuthBackend",
+
 
 ]
 
 GRAPHQL_JWT = {
+    "JWT_AUTH_HEADER_PREFIX": "Bearer",
     "JWT_VERIFY_EXPIRATION": True,
-
-    # optional
     "JWT_LONG_RUNNING_REFRESH_TOKEN": True,
+    "JWT_EXPIRATION_DELTA": timedelta(minutes=10),
+    "JWT_REFRESH_EXPIRATION_DELTA": timedelta(days=7),
+    "JWT_SECRET_KEY": SECRET_KEY,
+    "JWT_ALGORITHM": "HS256",
 }
 
-#AUTH_USER_MODEL = 'users.CustomUser'
+AUTH_USER_MODEL = 'users.CustomUser'

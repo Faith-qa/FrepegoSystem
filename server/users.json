@@ -12,7 +12,7 @@
       "email": "user1@email.com",
       "is_staff": false,
       "is_active": true,
-      "role": "waiter"
+      "role_type": "waiter"
     }
   },
   {
@@ -28,7 +28,7 @@
       "email": "user2@email.com",
       "is_staff": false,
       "is_active": true,
-      "role": "manager"
+      "role_type": "manager"
     }
   },
   {
@@ -54,7 +54,7 @@
       "email": "user3@email.com",
       "is_staff": false,
       "is_active": true,
-      "role": "cashier"
+      "role_type": "cashier"
     }
   },
   {
@@ -80,7 +80,7 @@
       "email": "user4@email.com",
       "is_staff": false,
       "is_active": true,
-      "role": "cashier"
+      "role_type": "cashier"
     }
   },
   {
