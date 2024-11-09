@@ -14,6 +14,7 @@ export interface CartItem {
 
 export interface OrderItem {
     id: string;
+    order_number: number;
     table_number: number;
     OrderItems: CartItem[];
     created_at: Date;
@@ -34,7 +35,7 @@ query {
 `
 const MenuItemContainer: React.FC =() =>{
     const [cart, setCart] = useState<CartItem[]>([])
-    const [orders, setOrder] = useState<OrderItem>()
+    const [orderCart, setOrderCart] = useState<OrderItem>()
     const {loading, error, data} = useQuery(MENU_ITEMS_QUERY)
     //add item to cart
     const addItemToCart = (item: CartItem, quantity: number) => {

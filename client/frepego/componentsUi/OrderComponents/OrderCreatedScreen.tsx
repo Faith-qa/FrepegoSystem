@@ -6,7 +6,7 @@ import {OrderItem} from "@/app/(app)/Tables/MenuItems/menuItemContainer";
 interface NewProps{
     createOrderView: boolean;
     closeCreatedOrder: ()=>void;
-    order: OrderItem;
+    order?: OrderItem;
     closeCart?: ()=> void;
     command: "continue" | "complete the order";
 }

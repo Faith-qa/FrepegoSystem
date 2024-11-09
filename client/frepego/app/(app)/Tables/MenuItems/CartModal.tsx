@@ -4,7 +4,8 @@ import ProductItem from "@/app/(app)/Tables/MenuItems/Item";
 import {CartItem} from "@/app/(app)/Tables/MenuItems/menuItemContainer";
 import {Icon} from "react-native-elements";
 import React, {useState} from "react";
-import OrderCreatedScreen from "@/componentsUi/Orders/OrderCreatedScreen";
+import OrderCreatedScreen from "@/componentsUi/OrderComponents/OrderCreatedScreen";
+
 
 interface NewProps{
     cart: CartItem[],

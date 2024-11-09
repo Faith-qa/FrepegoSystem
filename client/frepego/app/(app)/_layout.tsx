@@ -1,9 +1,8 @@
-import {Redirect, Stack} from "expo-router";
+import {Redirect, Stack, useRouter} from "expo-router";
 import {hidden} from "colorette";
 import {Drawer} from "expo-router/drawer";
-import React from "react";
+import React, {useState} from "react";
 import {GestureHandlerRootView} from "react-native-gesture-handler";
-import {store} from "@/store/store";
 import {Provider, useSelector} from 'react-redux';
 import {DrawerContentScrollView, DrawerItem, DrawerItemList} from "@react-navigation/drawer";
 import {View, StyleSheet, Text} from "react-native";
@@ -11,9 +10,21 @@ import ProfilePicContainer from "@/componentsUi/ProfilePic";
 import {useSession} from "@/app/authContext";
 import {LinearGradient} from "expo-linear-gradient";
 import {ApolloClient, InMemoryCache, ApolloProvider} from "@apollo/client";
+import {MaterialCommunityIcons} from "@expo/vector-icons";
+import orderItem from "@/componentsUi/OrderComponents/OrderItem";
+import OrderCartModal from "@/componentsUi/OrderComponents/OrderCartModal";
 
 export default function AppLayout() {
     const {session, isLoading} = useSession()
+    let cartItems:any[]=[] // Assuming cart is in the redux store
+    const cartItemCount = cartItems.length;
+    const [openOrderCart, setOpenOrderCart] = useState(false)
+
+    //close order cart
+
+    const closeOrderCart = ()=>{
+        setOpenOrderCart(false)
+    }
 
     if(isLoading) {
         return <Text>Loading ...</Text>
@@ -28,7 +39,6 @@ export default function AppLayout() {
 
 
   return (
-     <Provider store={store}>
       <GestureHandlerRootView>
           <Drawer
               drawerContent={(props)=><CustomDrawerContent {...props}/>}
@@ -37,7 +47,7 @@ export default function AppLayout() {
                   drawerInactiveTintColor: 'gray', // Text color when item is not selected
                   drawerActiveBackgroundColor: 'rgb(48, 119, 156)', // Background color when item is selected
                   drawerInactiveBackgroundColor: 'transparent', // Background color when item is not selected
-              }}
+          }}
 
           >
               <Drawer.Screen
@@ -45,7 +55,7 @@ export default function AppLayout() {
                   options={{
                       drawerLabel: "Home",
                       title: "Home",
-                      drawerLabelStyle:{color:"white"}
+                      drawerLabelStyle:{color:"white"},
 
                   }}
               />
@@ -53,8 +63,37 @@ export default function AppLayout() {
                   name={"Tables"}
                   options={{
                       drawerLabel: "Bar and Restaurant",
-                      title: 'create an order',
-                      drawerLabelStyle:{color:"white"}
+                      title: 'New order',
+                      drawerLabelStyle:{color:"white"},
+                      headerRight: () => (
+                          <View style={{ flexDirection: "row", alignItems: "center", padding:5, marginRight:15 }}>
+                              <Text style={{ fontSize: 20, fontWeight: "normal", textAlign: 'center', color: "black"}}>Pending Orders</Text>
+                              <MaterialCommunityIcons
+                                  name="cart"
+                                  size={24}
+                                  color="black"
+                                  style={{ marginLeft:10 }}
+                                  onPress={() => setOpenOrderCart(true)}//router.push('')} // Navigate to Cart screen
+                              />
+                              <View
+                                  style={{
+                                      position: "absolute",
+                                      right: -5,
+                                      top: -5,
+                                      //backgroundColor: "red",
+                                      borderRadius: 10,
+                                      width: 18,
+                                      height: 18,
+                                      justifyContent: "center",
+                                      alignItems: "center",
+                                  }}
+                              >
+                                  <Text style={{ color: "red", fontSize: 12 }}>{cartItemCount}</Text>
+                              </View>
+                              <OrderCartModal orderCart={cartItems} closeOrderCart={closeOrderCart} openOrderCart={openOrderCart}/>
+
+                          </View>
+                      ),
 
                   }}
               />
@@ -83,7 +122,7 @@ export default function AppLayout() {
                   }}
               />
           </Drawer>
-      </GestureHandlerRootView></Provider>
+      </GestureHandlerRootView>
 
     /*<Stack>
       <Stack.Screen name="index"  />
