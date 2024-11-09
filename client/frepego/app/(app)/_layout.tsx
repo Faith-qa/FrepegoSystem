@@ -10,6 +10,7 @@ import {View, StyleSheet, Text} from "react-native";
 import ProfilePicContainer from "@/componentsUi/ProfilePic";
 import {useSession} from "@/app/authContext";
 import {LinearGradient} from "expo-linear-gradient";
+import {ApolloClient, InMemoryCache, ApolloProvider} from "@apollo/client";
 
 export default function AppLayout() {
     const {session, isLoading} = useSession()
@@ -23,8 +24,11 @@ export default function AppLayout() {
     if(!session) {
         return <Redirect href={"/sign-in"}/>
     }
+
+
+
   return (
-      <Provider store={store}>
+     <Provider store={store}>
       <GestureHandlerRootView>
           <Drawer
               drawerContent={(props)=><CustomDrawerContent {...props}/>}

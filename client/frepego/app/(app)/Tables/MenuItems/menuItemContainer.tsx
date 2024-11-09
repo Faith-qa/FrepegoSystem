@@ -1,6 +1,8 @@
 import MenuItemScreen from "@/app/(app)/Tables/MenuItems/MenuItemScreen";
 import {useState} from "react";
-import {ImageBackground} from "react-native";
+import {gql, useQuery} from "@apollo/client";
+
+import {ActivityIndicator, ImageBackground} from "react-native";
 import s from "@/app/(app)/Tables/styles";
 export interface CartItem {
     id: string;
@@ -10,9 +12,30 @@ export interface CartItem {
     image: string;
 }
 
+export interface OrderItem {
+    id: string;
+    table_number: number;
+    OrderItems: CartItem[];
+    created_at: Date;
+    Total_Charge: number;
+
+}
+const MENU_ITEMS_QUERY = gql`
+query {
+    allMenuItems{
+    id
+    category
+    title
+    description
+    image
+    price
+    }
+    }
+`
 const MenuItemContainer: React.FC =() =>{
     const [cart, setCart] = useState<CartItem[]>([])
-
+    const [orders, setOrder] = useState<OrderItem>()
+    const {loading, error, data} = useQuery(MENU_ITEMS_QUERY)
     //add item to cart
     const addItemToCart = (item: CartItem, quantity: number) => {
         setCart(prevCart => {
@@ -59,7 +82,7 @@ const MenuItemContainer: React.FC =() =>{
 
 
 
-    const data = [
+    const dataa = [
         {
             id: '1',
             title: 'Full American Breakfast',
@@ -90,12 +113,18 @@ const MenuItemContainer: React.FC =() =>{
         },
     ];
     
-    
+
+    if (loading) {
+        return <ActivityIndicator size="large" color="#0000ff" />;
+    }
+
+    // Use fetched data if available, otherwise fallback to mock data
+    const menuItems = data?.allMenuItems || [];
 
     /*TODO: PULL MENU ITEM DATA FROM DATABASE*/
     /*TODO: functionality for add menu item*/
     return(
-        <MenuItemScreen  data={data}  addItemToCart={addItemToCart} getTotalPrice={getTotalPrice} removeItemFromCart={removeItemFromCart} cart={cart}/>
+        <MenuItemScreen  data={menuItems}  addItemToCart={addItemToCart} getTotalPrice={getTotalPrice} removeItemFromCart={removeItemFromCart} cart={cart}/>
     )
 }
 

@@ -3,7 +3,8 @@ import {FlatList, Modal, Text, TouchableOpacity, View} from "react-native";
 import ProductItem from "@/app/(app)/Tables/MenuItems/Item";
 import {CartItem} from "@/app/(app)/Tables/MenuItems/menuItemContainer";
 import {Icon} from "react-native-elements";
-import React from "react";
+import React, {useState} from "react";
+import OrderCreatedScreen from "@/componentsUi/Orders/OrderCreatedScreen";
 
 interface NewProps{
     cart: CartItem[],
@@ -20,6 +21,11 @@ const CartModal:React.FC<NewProps> = ({
                                           openCart
                                       }) =>{
 
+    const[orderView, setOrderView] = useState(false)
+
+    const closeOrderView = ()=>{
+        setOrderView(false)
+    }
     return(
         <Modal
             visible={openCart}
@@ -38,13 +44,15 @@ const CartModal:React.FC<NewProps> = ({
         {/* View Cart Button*/}
         {cart.length > 0 && (
             <TouchableOpacity style={s.cartButton} onPress={() => {
-                alert('orderCreated')
-                closeCart()
+                //alert('orderCreated')
+                //closeCart()
+                setOrderView(true)
             }}>
                 <Text style={s.cartText}>Create Order</Text>
             </TouchableOpacity>
         )}
     </View>
+            <OrderCreatedScreen createOrderView={orderView} closeCreatedOrder={closeOrderView} command={"continue"}/>
         </Modal>
             )
 }
