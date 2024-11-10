@@ -19,7 +19,7 @@ const TableSelectionScreen:React.FC<NewProps> = ({
             style={s.tableContainer}
             //onPress={()=> router.push('/Tables/MenuItems/')}
         >
-            <Text style={s.tableCapacity}>{item.capacity}</Text>
+            <Text style={s.tableCapacity}>{item.capacity} Person</Text>
             <Text style={s.tableNumber}>{item.number}</Text>
         </TouchableOpacity></Link>
     );

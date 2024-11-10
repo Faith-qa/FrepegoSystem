@@ -6,6 +6,7 @@ import OrderCreatedScreen from "@/componentsUi/OrderComponents/OrderCreatedScree
 import React, {useState} from "react";
 import OrderItemCont from "@/componentsUi/OrderComponents/OrderItem";
 import {LinearGradient} from "expo-linear-gradient";
+import {Link} from "expo-router";
 
 interface NewProps{
     orderCart: OrderItem[];
@@ -35,24 +36,23 @@ const OrderCartModal:React.FC<NewProps> = ({orderCart, openOrderCart,closeOrderC
              {orderCart.length > 0 ?<FlatList
                 data={orderCart}
                 renderItem={({ item }) => (
+                    <View>
                     <TouchableOpacity onPress={()=> setOrderView(true)} >
                         <OrderItemCont orderItem={item}/>
                     </TouchableOpacity>
+                        <OrderCreatedScreen createOrderView={orderView} closeCreatedOrder={closeOrderView} command={"complete the order"} order={item}/>
+                    </View>
                 )}
                 keyExtractor={(item) => item.id}
             />: <View style={[s.container, {marginTop: 40, alignItems: "center", padding: 40}]}>
              <Text style={{margin: 30, fontSize: 25}}>No Pending Orders</Text>
-
-                 <TouchableOpacity onPress={() => {
-                     //alert('orderCreated')
-                     //closeCart()
-                 }}>
+                <Link href={'/Tables/'} asChild>
+                 <TouchableOpacity onPress={()=> closeOrderCart()}>
                      <LinearGradient colors={['#1976D2', '#42A5F5']} style={styles.newOrderButton}>
                      <Text style={s.cartText}>Create Order</Text></LinearGradient>
-                 </TouchableOpacity>
+                 </TouchableOpacity></Link>
          </View>}
             {/* View Cart Button*/}
-        <OrderCreatedScreen createOrderView={orderView} closeCreatedOrder={closeOrderView} command={"complete the order"}/>
         </View>
     </Modal>)
 }

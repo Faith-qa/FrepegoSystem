@@ -19,7 +19,8 @@ interface NewProps {
     removeItemFromCart: (item:CartItem)=> void,
     addItemToCart:(item:CartItem, quantity:number)=>void,
     getTotalPrice: ()=>number;
-    cart:CartItem[]
+    cart:CartItem[],
+    tableNumber: number,
 }
 const MenuItemScreen: React.FC<NewProps> = (
     {
@@ -27,6 +28,7 @@ const MenuItemScreen: React.FC<NewProps> = (
         removeItemFromCart,
         addItemToCart,
         getTotalPrice,
+        tableNumber,
         cart
 
     }
@@ -57,7 +59,7 @@ const MenuItemScreen: React.FC<NewProps> = (
                     <Text style={s.cartText}>View Orders • KSh{getTotalPrice()}.00</Text>
                 </TouchableOpacity>
             )}
-            <CartModal addItemToCart={addItemToCart} cart={cart} closeCart={closeCart} openCart={openCart} removeItemFromCart={removeItemFromCart}/>
+            <CartModal addItemToCart={addItemToCart} cart={cart} closeCart={closeCart} openCart={openCart} removeItemFromCart={removeItemFromCart} TableNumber={tableNumber}/>
         </ImageBackground>
     )
 }

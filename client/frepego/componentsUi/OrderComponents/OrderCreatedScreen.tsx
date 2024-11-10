@@ -1,46 +1,25 @@
 import React from "react";
-import {Text, View, StyleSheet, Modal, TouchableOpacity} from "react-native";
-import {OrderItem} from "@/app/(app)/Tables/MenuItems/menuItemContainer";
+import { Text, View, StyleSheet, Modal, TouchableOpacity } from "react-native";
 
-
-interface NewProps{
+interface NewProps {
     createOrderView: boolean;
-    closeCreatedOrder: ()=>void;
-    order?: OrderItem;
-    closeCart?: ()=> void;
+    closeCreatedOrder: () => void;
+    order: any;
+    closeCart?: () => void;
     command: "continue" | "complete the order";
 }
-const OrderCreatedScreen: React.FC<NewProps> = ({createOrderView,
-                                                    closeCreatedOrder, command, closeCart}) => {
-    // Sample data
-    const orders = {
-        OrderAmount: "KES 1334.00",
-        OrderNumber: "404020000656827",
-        OrderItems: [
-            {
-                id: '1',
-                title: 'Full American Breakfast',
-                price: 650.00,
-                description: 'Freshly squeezed juice, fruits cuts, toast served with butter and jam, breakfast cereals...',
-                image: 'https://images.pexels.com/photos/103124/pexels-photo-103124.jpeg?auto=compress&cs=tinysrgb&w=1200', // Replace with actual image path or URL
-            },
-            {
-                id: '2',
-                title: 'Light Breakfast',
-                price: 520.00,
-                description: 'Freshly squeezed juice or fruit cuts, toast served with butter and jam and two eggs...',
-                image: 'https://images.pexels.com/photos/376464/pexels-photo-376464.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2', // Replace with actual image path or URL
-            },
-        ],
-    };
 
-    // TODO function to handle order creation and pushing to Ordercart
-    // TODO function to handle
+const OrderCreatedScreen: React.FC<NewProps> = ({
+                                                    createOrderView,
+                                                    closeCreatedOrder,
+                                                    command,
+                                                    closeCart,
+                                                    order,
+                                                }) => {
+    if (!order) return null;
 
     return (
-        <Modal
-            visible={createOrderView}
-        >
+        <Modal visible={createOrderView}>
             <View style={styles.container}>
                 <View style={styles.header}>
                     <Text style={styles.headerText}>Confirmation</Text>
@@ -58,35 +37,39 @@ const OrderCreatedScreen: React.FC<NewProps> = ({createOrderView,
                 <View style={styles.infoContainer}>
                     <View style={styles.infoRow}>
                         <Text style={styles.label}>Order amount</Text>
-                        <Text style={styles.value}>{orders.OrderAmount}</Text>
+                        <Text style={styles.value}>{order.totalCharge}</Text>
                     </View>
                     <View style={styles.divider} />
                     <View style={styles.infoRow}>
                         <Text style={styles.label}>Order number</Text>
-                        <Text style={styles.value}>{orders.OrderNumber}</Text>
+                        <Text style={styles.value}>{order.orderNumber}</Text>
                     </View>
                     <View style={styles.divider} />
                     <View>
                         <Text style={styles.label}>Order details</Text>
-                        {orders.OrderItems.map((item)=>(
-                            <View style={styles.infoRow} key={item.id}>
-                                <Text style={styles.value}>{item.title}</Text>
-                                <Text>{item.price}</Text>
+                        {order.orderItems.map((item: any, index: number) => (
+                            <View style={styles.infoRow} key={index}>
+                                <Text style={styles.value}>{item.menuItem.title}</Text>
+                                <Text>{item.menuItem.price}</Text>
+                                <Text>Quantity: {item.quantity}</Text>
                             </View>
                         ))}
                     </View>
                     <View style={styles.divider} />
                 </View>
 
-                <TouchableOpacity style={styles.buttonContainer}
-                                  onPress={()=>{
-                                      if (command === "continue"){
-                                          alert("continue shoping")
-                                          closeCreatedOrder()
-                                      } else if (command == "complete the order"){
-                                          alert("completing the order")
-                                      }
-                                  }}
+                <TouchableOpacity
+                    style={styles.buttonContainer}
+                    onPress={() => {
+                        if (command === "continue") {
+                            if (closeCart) {
+                                closeCart();
+                            }
+                            closeCreatedOrder();
+                        } else if (command == "complete the order") {
+                            alert("Completing the order");
+                        }
+                    }}
                 >
                     <Text style={styles.buttonText}>{command}</Text>
                 </TouchableOpacity>
