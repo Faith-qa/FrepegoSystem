@@ -1,6 +1,6 @@
 
 import s from './styles'
-import {FlatList, Image, Text, TouchableOpacity, View} from "react-native";
+import {FlatList, Image, Text, TouchableOpacity, View, ImageBackground} from "react-native";
 import {Icon} from "react-native-elements";
 import { useRoute } from '@react-navigation/native';
 import ProductItem from "@/app/(app)/Tables/MenuItems/Item";
@@ -19,7 +19,8 @@ interface NewProps {
     removeItemFromCart: (item:CartItem)=> void,
     addItemToCart:(item:CartItem, quantity:number)=>void,
     getTotalPrice: ()=>number;
-    cart:CartItem[]
+    cart:CartItem[],
+    tableNumber: number,
 }
 const MenuItemScreen: React.FC<NewProps> = (
     {
@@ -27,6 +28,7 @@ const MenuItemScreen: React.FC<NewProps> = (
         removeItemFromCart,
         addItemToCart,
         getTotalPrice,
+        tableNumber,
         cart
 
     }
@@ -40,7 +42,10 @@ const MenuItemScreen: React.FC<NewProps> = (
     }
 
     return(
-        <View style={s.container}>
+        <ImageBackground
+            source={{uri: "https://images.unsplash.com/photo-1524947820859-81b71fe05edc?q=80&w=2833&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"}} // Replace with the background image link
+            style={s.container}>
+        {/*<View style={s.container}>*/}
             <FlatList
                 data={data}
                 renderItem={({ item }) => (
@@ -54,8 +59,8 @@ const MenuItemScreen: React.FC<NewProps> = (
                     <Text style={s.cartText}>View Orders • KSh{getTotalPrice()}.00</Text>
                 </TouchableOpacity>
             )}
-            <CartModal addItemToCart={addItemToCart} cart={cart} closeCart={closeCart} openCart={openCart} removeItemFromCart={removeItemFromCart}/>
-        </View>
+            <CartModal addItemToCart={addItemToCart} cart={cart} closeCart={closeCart} openCart={openCart} removeItemFromCart={removeItemFromCart} TableNumber={tableNumber}/>
+        </ImageBackground>
     )
 }
 

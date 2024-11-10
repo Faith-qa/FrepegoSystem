@@ -3,6 +3,7 @@ import { View, Text, ImageBackground, TouchableOpacity, Image, StyleSheet } from
 import s from './styles'
 import {Link} from "expo-router";
 
+
 interface NewProps{
     services:any[];
 }
