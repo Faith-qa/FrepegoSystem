@@ -1,5 +1,9 @@
 import React from "react";
-import { Text, View, StyleSheet, Modal, TouchableOpacity } from "react-native";
+import {Text, View, StyleSheet, Modal, TouchableOpacity, ActivityIndicator} from "react-native";
+import {Icon} from "react-native-elements";
+import {useMutation} from "@apollo/client";
+import {UPDATE_ORDER_STATUS} from "@/app/graph_queries";
+import s from "@/app/(app)/Tables/MenuItems/styles";
 
 interface NewProps {
     createOrderView: boolean;
@@ -7,6 +11,7 @@ interface NewProps {
     order: any;
     closeCart?: () => void;
     command: "continue" | "complete the order";
+    setOrderCart?: React.Dispatch<React.SetStateAction<any[]>>
 }
 
 const OrderCreatedScreen: React.FC<NewProps> = ({
@@ -15,12 +20,36 @@ const OrderCreatedScreen: React.FC<NewProps> = ({
                                                     command,
                                                     closeCart,
                                                     order,
+                                                    setOrderCart
                                                 }) => {
+    const [updatePendingOrder, {loading, error, data}] = useMutation(UPDATE_ORDER_STATUS);
+
     if (!order) return null;
+
+    const handleCompleteOrder = async () => {
+        try {
+            await updatePendingOrder({
+                variables: {
+                    orderId: order.id
+                }
+            });
+            if (setOrderCart) {
+                setOrderCart(prevCart => prevCart.filter(item => item.id !== order.id));
+            }
+            closeCreatedOrder();
+        } catch (err) {
+            console.error("Error completing the order:", err);
+        }
+    };
 
     return (
         <Modal visible={createOrderView}>
             <View style={styles.container}>
+                {command === "complete the order" && (
+                    <TouchableOpacity onPress={closeCreatedOrder} style={{margin: 20}}>
+                        <Icon name="arrow-back" size={24} color="black" />
+                    </TouchableOpacity>
+                )}
                 <View style={styles.header}>
                     <Text style={styles.headerText}>Confirmation</Text>
                 </View>
@@ -60,18 +89,20 @@ const OrderCreatedScreen: React.FC<NewProps> = ({
 
                 <TouchableOpacity
                     style={styles.buttonContainer}
-                    onPress={() => {
+                    onPress={async () => {
                         if (command === "continue") {
-                            if (closeCart) {
-                                closeCart();
-                            }
+                            if (closeCart) closeCart();
                             closeCreatedOrder();
-                        } else if (command == "complete the order") {
-                            alert("Completing the order");
+                        } else if (command === "complete the order") {
+                            await handleCompleteOrder();
                         }
                     }}
                 >
-                    <Text style={styles.buttonText}>{command}</Text>
+                    {loading ? (
+                        <ActivityIndicator size="small" color="#fff" />
+                    ) : (
+                        <Text style={s.cartText}>{command}</Text>
+                    )}
                 </TouchableOpacity>
             </View>
         </Modal>

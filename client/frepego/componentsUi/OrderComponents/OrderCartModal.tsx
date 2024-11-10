@@ -7,6 +7,8 @@ import React, {useState} from "react";
 import OrderItemCont from "@/componentsUi/OrderComponents/OrderItem";
 import {LinearGradient} from "expo-linear-gradient";
 import {Link} from "expo-router";
+import {useMutation} from "@apollo/client";
+import {UPDATE_ORDER_STATUS} from "@/app/graph_queries";
 
 interface NewProps{
     orderCart: OrderItem[];
@@ -14,14 +16,29 @@ interface NewProps{
     //completeOrder: (id: OrderItem["id"])=>Promise<void>;
     closeOrderCart: ()=>void;
     openOrderCart: boolean;
+    setOrderCart: React.Dispatch<React.SetStateAction<any[]>>; // Correct type for state setter
 
 }
 
-const OrderCartModal:React.FC<NewProps> = ({orderCart, openOrderCart,closeOrderCart,})=> {
-    const [orderView, setOrderView] = useState(false)
+const OrderCartModal:React.FC<NewProps> = ({orderCart, openOrderCart,closeOrderCart,setOrderCart})=> {
+    const [orderView, setOrderView, ] = useState(false)
+    const [updatePendindOrder, {loading, error, data}] = useMutation(UPDATE_ORDER_STATUS)
 
+    const handleCompleteOrder = async(item:any) => {
+        const order_id = item.id
+        await updatePendindOrder({
+            variables:{
+                orderId: order_id
+            }
+        })
+
+        closeOrderView()
+
+
+    }
+    console.log("this is the first order",orderCart[0])
     const completeOrder = () => {
-        // TODO Implement Apollo query
+        // TODO Implement Apo
     }
     const closeOrderView = () => {
         setOrderView(false)

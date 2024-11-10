@@ -1,11 +1,11 @@
 import {Redirect, Stack, useRouter} from "expo-router";
 import {hidden} from "colorette";
 import {Drawer} from "expo-router/drawer";
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {GestureHandlerRootView} from "react-native-gesture-handler";
 import {Provider, useSelector} from 'react-redux';
 import {DrawerContentScrollView, DrawerItem, DrawerItemList} from "@react-navigation/drawer";
-import {View, StyleSheet, Text} from "react-native";
+import {View, StyleSheet, Text, ActivityIndicator} from "react-native";
 import ProfilePicContainer from "@/componentsUi/ProfilePic";
 import {useSession} from "@/app/authContext";
 import {LinearGradient} from "expo-linear-gradient";
@@ -13,15 +13,28 @@ import {ApolloClient, InMemoryCache, ApolloProvider} from "@apollo/client";
 import {MaterialCommunityIcons} from "@expo/vector-icons";
 import orderItem from "@/componentsUi/OrderComponents/OrderItem";
 import OrderCartModal from "@/componentsUi/OrderComponents/OrderCartModal";
-
+import {useQuery} from "@apollo/client";
+import {PENDING_ORDERS_QUERY} from "@/app/graph_queries";
 export default function AppLayout() {
     const {session, isLoading} = useSession()
-    let cartItems:any[]=[] // Assuming cart is in the redux store
-    const cartItemCount = cartItems.length;
+    const [pendingOrders, setPendingOrders] = useState<any[]>([]);
+
+    const { data, error, loading } = useQuery(PENDING_ORDERS_QUERY);
+
     const [openOrderCart, setOpenOrderCart] = useState(false)
 
-    //close order cart
-
+    useEffect(() => {
+        if (data) {
+            setPendingOrders(data.pendingOrders);
+            // Optional: Add additional side effects here, e.g., notifications
+            console.log("Pending orders updated:", pendingOrders[0]);
+        }
+    }, [data]);
+    //only require authentication withing the (app) groups as users
+    // need to be able to access the (auth) group and sign i
+    if(!session) {
+        return <Redirect href={"/sign-in"}/>
+    }
     const closeOrderCart = ()=>{
         setOpenOrderCart(false)
     }
@@ -29,13 +42,6 @@ export default function AppLayout() {
     if(isLoading) {
         return <Text>Loading ...</Text>
     }
-    //only require authentication withing the (app) groups as users
-    // need to be able to access the (auth) group and sign in
-
-    if(!session) {
-        return <Redirect href={"/sign-in"}/>
-    }
-
 
 
   return (
@@ -68,13 +74,17 @@ export default function AppLayout() {
                       headerRight: () => (
                           <View style={{ flexDirection: "row", alignItems: "center", padding:5, marginRight:15 }}>
                               <Text style={{ fontSize: 20, fontWeight: "normal", textAlign: 'center', color: "black"}}>Pending Orders</Text>
-                              <MaterialCommunityIcons
-                                  name="cart"
-                                  size={24}
-                                  color="black"
-                                  style={{ marginLeft:10 }}
-                                  onPress={() => setOpenOrderCart(true)}//router.push('')} // Navigate to Cart screen
-                              />
+                              {loading ? (
+                                  <ActivityIndicator size="small" color="black" style={{ marginLeft: 10 }} />
+                              ) : (
+                                  <MaterialCommunityIcons
+                                      name="cart"
+                                      size={24}
+                                      color="black"
+                                      style={{ marginLeft: 10 }}
+                                      onPress={() => setOpenOrderCart(true)}
+                                  />
+                              )}
                               <View
                                   style={{
                                       position: "absolute",
@@ -88,9 +98,9 @@ export default function AppLayout() {
                                       alignItems: "center",
                                   }}
                               >
-                                  <Text style={{ color: "red", fontSize: 12 }}>{cartItemCount}</Text>
+                                  <Text style={{ color: "red", fontSize: 12 }}>{pendingOrders.length}</Text>
                               </View>
-                              <OrderCartModal orderCart={cartItems} closeOrderCart={closeOrderCart} openOrderCart={openOrderCart}/>
+                              <OrderCartModal orderCart={pendingOrders} closeOrderCart={closeOrderCart} openOrderCart={openOrderCart} setOrderCart={setPendingOrders}/>
 
                           </View>
                       ),

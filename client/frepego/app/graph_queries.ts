@@ -10,6 +10,15 @@ query{
   }
 }
 `
+export const UPDATE_ORDER_STATUS = gql`
+mutation UpdateOrderStatus($orderId: String!) {
+  updateOrderStatus(orderId: $orderId) {
+    order {
+      id
+      status
+    }
+  }
+}`;
 
 export const CREATE_ORDER_MUTATION = gql `
 mutation CreateOrder($tableNumber: Int!, $orderItems: [OrderItemInput!]!) {
@@ -32,7 +41,24 @@ mutation CreateOrder($tableNumber: Int!, $orderItems: [OrderItemInput!]!) {
     }
   }
 }
-
-
-`
-
+`;
+export const PENDING_ORDERS_QUERY = gql`
+  query PendingOrders {
+    pendingOrders {
+      id
+      orderNumber
+      table {
+        number
+      }
+      status
+      totalCharge
+      orderItems {
+        menuItem {
+          title
+          price
+        }
+        quantity
+      }
+    }
+  }
+`;
