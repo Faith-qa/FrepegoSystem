@@ -1,23 +1,63 @@
 import React, { useState } from "react";
-import { Modal, Text, TextInput, View, StyleSheet, TouchableOpacity } from "react-native";
+import {Modal, Text, TextInput, View, StyleSheet, TouchableOpacity, Alert, ActivityIndicator} from "react-native";
 import {Icon} from "react-native-elements";
+import {useMutation} from "@apollo/client";
+import {CREATE_GUEST_MUTATION} from "@/app/graph_queries";
+import {useLoadingContainerStyle} from "expo-dev-launcher/bundle/components/EASUpdatesRows";
 
 
 interface NewProps{
     open: boolean;
     close: ()=> void;
+    setGuestids: React.Dispatch<React.SetStateAction<any[]>>
+
 }
-const GuestDetailsModal: React.FC<NewProps> = ({open, close}) => {
+const GuestDetailsModal: React.FC<NewProps> = ({open, close, setGuestids}) => {
     const [name, setName] = useState("");
     const [phoneNumber, setPhoneNumber] = useState("");
     const [idNumber, setIdNumber] = useState("");
+    const[createGuest, {loading, error, data}] = useMutation(CREATE_GUEST_MUTATION)
 
-    const handleSubmit = () => {
-        console.log("Name:", name);
-        console.log("Phone Number:", phoneNumber);
-        console.log("ID Number:", idNumber);
-        // You can add additional functionality here, such as form validation or API calls
+
+
+    const handleSubmit = async () => {
+        try {
+            if (name === "") {
+                throw new Error("name cannot be blank");
+            }
+            if (phoneNumber === "") {
+                throw new Error("phone number cannot be blank");
+            }
+            if (idNumber === "") {
+                throw new Error("ID/passport number cannot be blank");
+            }
+
+            // Directly capture the result of createGuest mutation call
+            const { data } = await createGuest({
+                variables: {
+                    name: name,
+                    phone_number: phoneNumber,
+                    id_number: idNumber,
+                },
+            });
+
+            // Check if data is received successfully
+            if (data && data.createGuest && data.createGuest.guest) {
+                // Add the new guest ID as an object to the guestIds array
+                setGuestids((prevGuestIds) => [
+                    ...prevGuestIds,
+                    { id: data.createGuest.guest.id },
+                ]);
+            } else {
+                console.log("Guest creation returned no data.");
+            }
+
+            close();
+        } catch (error:any) {
+            console.error(error.message);
+        }
     };
+
 
     return (
         <Modal transparent={true} animationType="slide" visible={open}>
@@ -54,7 +94,8 @@ const GuestDetailsModal: React.FC<NewProps> = ({open, close}) => {
                         />
                     </View>
                     <TouchableOpacity style={styles.button} onPress={handleSubmit}>
-                        <Text style={styles.buttonText}>Submit</Text>
+                        {loading ? <ActivityIndicator size={"small"} color="#fff"/> :<Text style={styles.buttonText}>Submit</Text>
+                        }
                     </TouchableOpacity>
                 </View>
             </View>

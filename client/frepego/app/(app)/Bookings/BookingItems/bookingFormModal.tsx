@@ -46,13 +46,13 @@ const BookingForm: React.FC<NewProps> = ({openBookingForm, closeBookingForm, roo
         if (checkin ===  null || checkout === null){
             throw Error("provide checkin and checkout dates")
         }
-
+        const flatIds = guestids.flatMap(Object.values)
         await createBooking({
             variables: {
-                guestIds: guestids,
+                guestIds: flatIds,
                 roomId: roomDetails.id,
-                checkIn: checkin.toLocaleDateString(),
-                checkOut: checkout.toLocaleDateString(),
+                checkIn: checkin.toISOString(),
+                checkOut: checkout.toISOString(),
             }
         })
             if(setBookingCart){
@@ -186,7 +186,7 @@ const BookingForm: React.FC<NewProps> = ({openBookingForm, closeBookingForm, roo
             {/* Trip Details */}
             <View style={styles.section}>
                 <Text style={styles.sectionTitle}>Your Stay</Text>
-                {guestids.length > 0 && guestids.length <= 2 ? guestids.map(item=><Text style={styles.label}>Guest id: {item.id}</Text>):<Text style={styles.label}>Guest id: null</Text>}
+                {guestids.length > 0 && guestids.length <= 2 ? guestids.map(item=><Text key={item.id} style={styles.label}>Guest id: {item.id}</Text>):<Text style={styles.label}>Guest id: null</Text>}
                 {/*<View style={styles.row}>
                     <Text style={styles.label}>Dates</Text>
                     <Text style={styles.value}>17–22 Nov</Text>
@@ -196,7 +196,7 @@ const BookingForm: React.FC<NewProps> = ({openBookingForm, closeBookingForm, roo
                     <Text style={styles.label}>Guests</Text>
                     <Text style={styles.value}>2 guests</Text>
                     <TouchableOpacity onPress={()=> handleGuestInfo()}><Text style={styles.editButton}>Add guest info</Text></TouchableOpacity>
-                <GuestDetailsModal open={openGuestInfo} close={closeGuestInfo}/>
+                <GuestDetailsModal open={openGuestInfo} close={closeGuestInfo} setGuestids={setGuestids}/>
                 </View>
             </View>
 
