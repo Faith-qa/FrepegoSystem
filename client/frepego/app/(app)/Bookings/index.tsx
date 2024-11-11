@@ -1,3 +1,3 @@
-import Bookingscreate from "@/app/(app)/Bookings/Bookingscreate";
+import BookingSelectionContainer from "@/app/(app)/Bookings/BookingSelectionContainer";
 
-export default Bookingscreate;
+export default BookingSelectionContainer;
