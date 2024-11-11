@@ -14,36 +14,92 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import s from "@/app/(app)/Tables/MenuItems/styles";
 import {Icon} from "react-native-elements";
 import GuestDetailsModal from "@/componentsUi/BookingPage/GuestDetailsModal";
+import {useMutation} from "@apollo/client";
+import {CREATE_BOOKING_MUTATION} from "@/app/graph_queries";
 
 interface NewProps {
     roomDetails: any,
     openBookingForm: boolean;
     closeBookingForm: ()=>void;
+    setBookingCart?:React.Dispatch<React.SetStateAction<any[]>>
 }
 
-const BookingForm: React.FC<NewProps> = ({openBookingForm, closeBookingForm}) => {
-    const room = {
-        "id": "1",
-        "name": "LION",
-        "price": 2000,
-        "description": "A cozy space with a queen-size bed, free Wi-Fi, flat-screen TV, and essential amenities for a comfortable stay.",
-        "image": "https://images.unsplash.com/photo-1445991842772-097fea258e7b?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-    };
+const BookingForm: React.FC<NewProps> = ({openBookingForm, closeBookingForm, roomDetails, setBookingCart}) => {
 
     const [checkin, setCheckin] = useState<Date | null>(null);
     const [checkout, setCheckout] = useState<Date | null>(null);
     const [openCheckinPicker, setOpenCheckinPicker] = useState(false);
     const [openCheckoutPicker, setOpenCheckoutPicker] = useState(false);
-    const [loading, setLoading] = useState(false);
     const [openGuestInfo, setOpenGuestInfo] = useState(false);
-
+    const [guestids, setGuestids] = useState<any[]>([])
+    const [createBooking, {loading, error, data}] = useMutation(CREATE_BOOKING_MUTATION)
+    const image = "https://images.unsplash.com/photo-1445991842772-097fea258e7b?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
     const closeGuestInfo = ()=>{
         setOpenGuestInfo(false)
+    }
+
+    const handleCreateBooking = async() => {
+        try{
+        if (guestids.length == 0 || guestids.length > 2){
+            throw Error("guest info needed")
+        }
+        if (checkin ===  null || checkout === null){
+            throw Error("provide checkin and checkout dates")
+        }
+
+        await createBooking({
+            variables: {
+                guestIds: guestids,
+                roomId: roomDetails.id,
+                checkIn: checkin.toLocaleDateString(),
+                checkOut: checkout.toLocaleDateString(),
+            }
+        })
+            if(setBookingCart){
+                setBookingCart(prevCart=>prevCart.filter(item=> item.id !== roomDetails.id))
+                closeBookingForm()
+            }
+
+
+        }
+        catch (err:any) {
+            Alert.alert("Error", `${err}`);
+        }
+
+
+    }
+
+    function calculateDaysBetweenDates(checkin: string|null | Date, checkout: string|null | Date):number {
+        // Convert start and end dates to Date objects if they are strings
+        if (checkin === null || checkout === null){
+            return 1
+        }
+        const start = new Date(checkin);
+        const end = new Date(checkout);
+
+        // Calculate the difference in time between the two dates
+        const timeDifference = end.getTime() - start.getTime();
+
+        // Convert the time difference from milliseconds to days
+        const daysDifference = timeDifference / (1000 * 3600 * 24);
+
+        return Math.abs(daysDifference); // Return the absolute value to avoid negative values
+    }
+
+    const handleGuestInfo = () => {
+        if(guestids.length > 2){
+            Alert.alert('Error', 'You cannot add more than 2 guests');
+
+        }else{
+            setOpenGuestInfo(true)
+        }
     }
     const handleCheckinDateChange = (event: any, selectedDate?: Date) => {
         setOpenCheckinPicker(false);
         if (selectedDate) {
             setCheckin(selectedDate);
+        } else {
+            setOpenGuestInfo(true)
         }
     };
 
@@ -52,16 +108,13 @@ const BookingForm: React.FC<NewProps> = ({openBookingForm, closeBookingForm}) =>
         if (selectedDate) {
             if (checkin && selectedDate <= checkin) {
                 Alert.alert("Invalid date", "Checkout date cannot be before or the same as check-in date.");
-                return;
+                return 0;
             }
             setCheckout(selectedDate);
         }
     };
 
-    const handleCompleteBooking = () => {
-        alert("booking complete")
-        closeBookingForm()
-    }
+
 
     return (
         <Modal
@@ -81,12 +134,12 @@ const BookingForm: React.FC<NewProps> = ({openBookingForm, closeBookingForm}) =>
             <View style={styles.section}>
                 <View style={styles.propertyInfo}>
                     <Image
-                        source={{ uri: room.image }}
+                        source={{ uri: image }}
                         style={styles.propertyImage}
                     />
                     <View style={styles.propertyText}>
-                        <Text style={styles.propertyTitle}>{room.name}</Text>
-                        <Text style={styles.propertySubtitle}>{room.description}</Text>
+                        <Text style={styles.propertyTitle}>{roomDetails.roomNumber}</Text>
+                        <Text style={styles.propertySubtitle}>{roomDetails.roomType.description}</Text>
                     </View>
                 </View>
             </View>
@@ -133,6 +186,7 @@ const BookingForm: React.FC<NewProps> = ({openBookingForm, closeBookingForm}) =>
             {/* Trip Details */}
             <View style={styles.section}>
                 <Text style={styles.sectionTitle}>Your Stay</Text>
+                {guestids.length > 0 && guestids.length <= 2 ? guestids.map(item=><Text style={styles.label}>Guest id: {item.id}</Text>):<Text style={styles.label}>Guest id: null</Text>}
                 {/*<View style={styles.row}>
                     <Text style={styles.label}>Dates</Text>
                     <Text style={styles.value}>17–22 Nov</Text>
@@ -141,7 +195,7 @@ const BookingForm: React.FC<NewProps> = ({openBookingForm, closeBookingForm}) =>
                 <View style={styles.row}>
                     <Text style={styles.label}>Guests</Text>
                     <Text style={styles.value}>2 guests</Text>
-                    <TouchableOpacity onPress={()=>setOpenGuestInfo(true)}><Text style={styles.editButton}>Edit</Text></TouchableOpacity>
+                    <TouchableOpacity onPress={()=> handleGuestInfo()}><Text style={styles.editButton}>Add guest info</Text></TouchableOpacity>
                 <GuestDetailsModal open={openGuestInfo} close={closeGuestInfo}/>
                 </View>
             </View>
@@ -150,18 +204,18 @@ const BookingForm: React.FC<NewProps> = ({openBookingForm, closeBookingForm}) =>
             <View style={styles.section}>
                 <Text style={styles.sectionTitle}>Price details</Text>
                 <View style={styles.row}>
-                    <Text style={styles.label}>ksh 3000 x 5 nights</Text>
-                    <Text style={styles.value}>ksh 3000</Text>
+                    <Text style={styles.label}>ksh{roomDetails.roomType.pricePerNight} x {calculateDaysBetweenDates(checkin,checkout)}</Text>
+                    <Text style={styles.value}>ksh {roomDetails.roomType.pricePerNight}</Text>
                 </View>
                 <View style={styles.row}>
                     <Text style={[styles.label, styles.totalLabel]}>Total Ksh</Text>
-                    <Text style={[styles.value, styles.totalValue]}>15000</Text>
+                    <Text style={[styles.value, styles.totalValue]}>{roomDetails.roomType.pricePerNight * (calculateDaysBetweenDates(checkin,checkout))}</Text>
                 </View>
                 <TouchableOpacity><Text style={styles.moreInfo}>More info</Text></TouchableOpacity>
             </View>
             <TouchableOpacity
                 style={styles.buttonContainer}
-                onPress={()=> handleCompleteBooking()}
+                onPress={handleCreateBooking}
             >
                 {loading ? (
                     <ActivityIndicator size="small" color="#fff" />
