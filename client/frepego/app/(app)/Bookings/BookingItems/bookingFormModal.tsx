@@ -18,14 +18,14 @@ import {useMutation} from "@apollo/client";
 import {CREATE_BOOKING_MUTATION} from "@/app/graph_queries";
 
 interface NewProps {
-    roomDetails: any,
+    roomDetails?: any,
+    boookingDetails?:any,
     openBookingForm: boolean;
     closeBookingForm: ()=>void;
     setBookingCart?:React.Dispatch<React.SetStateAction<any[]>>
 }
 
 const BookingForm: React.FC<NewProps> = ({openBookingForm, closeBookingForm, roomDetails, setBookingCart}) => {
-
     const [checkin, setCheckin] = useState<Date | null>(null);
     const [checkout, setCheckout] = useState<Date | null>(null);
     const [openCheckinPicker, setOpenCheckinPicker] = useState(false);
@@ -51,8 +51,8 @@ const BookingForm: React.FC<NewProps> = ({openBookingForm, closeBookingForm, roo
             variables: {
                 guestIds: flatIds,
                 roomId: roomDetails.id,
-                checkIn: checkin.toISOString(),
-                checkOut: checkout.toISOString(),
+                checkIn: checkin.toISOString().slice(0, 19),
+                checkOut: checkout.toISOString().slice(0, 19),
             }
         })
             if(setBookingCart){
