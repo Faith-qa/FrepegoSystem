@@ -32,7 +32,7 @@ SECRET_KEY = 'django-insecure-nb78yc7$i+ui+82)3wcmn-$852knj#zfyb1nyh6=bydg69k^ke
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['10.0.2.2', '127.0.0.1']
+ALLOWED_HOSTS = ['10.0.2.2', '127.0.0.1', 'frepegosystem.onrender.com']
 
 
 # Application definition

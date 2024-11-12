@@ -5,15 +5,40 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3eb7d557-76b2-4af4-96c8-9e29b5173e64" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/server/booking/management/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/booking/management/commands/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/booking/management/commands/rooms.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/booking/management/commands/seed-menuItems.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/booking/management/commands/seed-room.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/booking/management/commands/seed-roomType.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/client/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/frepego/app/(app)/Tables/_layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/frepego/app/(app)/Tables/_layout.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/frepego/app/(app)/_layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/frepego/app/(app)/_layout.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frepego.iml" beforeDir="false" afterPath="$PROJECT_DIR$/frepego.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/barRestaurant/management/commands/seed-menuItems.py" beforeDir="false" afterPath="$PROJECT_DIR$/server/barRestaurant/management/commands/seed-menuItems.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/barRestaurant/management/commands/seed-tables.py" beforeDir="false" afterPath="$PROJECT_DIR$/server/barRestaurant/management/commands/seed-tables.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/barRestaurant/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/server/barRestaurant/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/barRestaurant/schema.py" beforeDir="false" afterPath="$PROJECT_DIR$/server/barRestaurant/schema.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/booking/schema.py" beforeDir="false" afterPath="$PROJECT_DIR$/server/booking/schema.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/frepegoSystem/schema.py" beforeDir="false" afterPath="$PROJECT_DIR$/server/frepegoSystem/schema.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/frepegoSystem/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/server/frepegoSystem/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/users/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/users/admin.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/users/apps.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/users/migrations/0001_initial.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/users/migrations/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/users/models.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/users/schema.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/users/tests.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/users/views.py" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="DjangoConsoleOptions" custom-start-script="import sys; print('Python %s on %s' % (sys.version, sys.platform))&#10;import django; print('Django %s' % django.get_version())&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;if 'setup' in dir(django): django.setup()&#10;import django_manage_shell; django_manage_shell.run(PROJECT_ROOT)">
+    <option name="myCustomStartScript" value="import sys; print('Python %s on %s' % (sys.version, sys.platform))&#10;import django; print('Django %s' % django.get_version())&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;if 'setup' in dir(django): django.setup()&#10;import django_manage_shell; django_manage_shell.run(PROJECT_ROOT)" />
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -39,24 +64,34 @@
     <option name="showLibraryContents" value="true" />
     <option name="showMembers" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/Users/faithokoth/IdeaProjects/frepego&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;/Users/faithokoth/IdeaProjects/frepego/client/frepego/node_modules/typescript/lib&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenDjangoStructureViewOnStart": "true",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "develop",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "/Users/faithokoth/IdeaProjects/frepego/server/booking",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "SDKs",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "ts.external.directory.path": "/Users/faithokoth/IdeaProjects/frepego/client/frepego/node_modules/typescript/lib",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/server/booking" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/server/booking/management/commands" />
+      <recent name="$PROJECT_DIR$/server/barRestaurant/management/commands" />
+      <recent name="$PROJECT_DIR$/server/frepegoSystem" />
       <recent name="$PROJECT_DIR$" />
       <recent name="$PROJECT_DIR$/server" />
     </key>
@@ -76,10 +111,43 @@
       <workItem from="1728986378594" duration="20000" />
       <workItem from="1728986443445" duration="1000" />
       <workItem from="1728986494470" duration="735000" />
+      <workItem from="1730889588736" duration="10918000" />
+      <workItem from="1730990903223" duration="21504000" />
+      <workItem from="1731080423787" duration="3028000" />
+      <workItem from="1731088247905" duration="12382000" />
+      <workItem from="1731218068517" duration="7041000" />
+      <workItem from="1731236715094" duration="5861000" />
+      <workItem from="1731310146010" duration="413000" />
+      <workItem from="1731311020734" duration="1049000" />
+      <workItem from="1731312074389" duration="2754000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/server/barRestaurant/schema.py</url>
+          <line>25</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/server/frepegoSystem/schema.py</url>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/server/users/models.py</url>
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/server/booking/models.py</url>
+          <line>7</line>
+          <option name="timeStamp" value="4" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>
