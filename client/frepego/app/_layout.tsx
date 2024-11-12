@@ -10,9 +10,10 @@ import cache from "@/app/cache";
 export default function Root(){
 
     const client = new ApolloClient({
-        uri: 'http://10.0.2.2:8000/graphql/',
+        uri: ' https://frepegosystem.onrender.com/graphql/',
         cache: cache
     })
+    console.log(client)
     return(
         <SessionProvider>
             <ApolloProvider client={client}>

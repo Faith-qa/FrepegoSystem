@@ -120,7 +120,41 @@ export default function AppLayout() {
                   options={{
                       drawerLabel: "Book a room",
                       title: 'Create a booking',
-                      drawerLabelStyle:{color:"white"}
+                      drawerLabelStyle:{color:"white"},
+                      headerRight: () => (
+                          <View style={{ flexDirection: "row", alignItems: "center", padding:5, marginRight:15 }}>
+                              <Text style={{ fontSize: 20, fontWeight: "normal", textAlign: 'center', color: "black"}}>Pending Orders</Text>
+                              {loading ? (
+                                  <ActivityIndicator size="small" color="black" style={{ marginLeft: 10 }} />
+                              ) : (
+                                  <MaterialCommunityIcons
+                                      name="cart"
+                                      size={24}
+                                      color="black"
+                                      style={{ marginLeft: 10 }}
+                                      onPress={() => setOpenOrderCart(true)}
+                                  />
+                              )}
+                              <View
+                                  style={{
+                                      position: "absolute",
+                                      right: -5,
+                                      top: -5,
+                                      //backgroundColor: "red",
+                                      borderRadius: 10,
+                                      width: 18,
+                                      height: 18,
+                                      justifyContent: "center",
+                                      alignItems: "center",
+                                  }}
+                              >
+                                  <Text style={{ color: "red", fontSize: 12 }}>{pendingOrders.length}</Text>
+                              </View>
+                              <OrderCartModal orderCart={pendingOrders} closeOrderCart={closeOrderCart} openOrderCart={openOrderCart} setOrderCart={setPendingOrders}/>
+
+                          </View>
+                      ),
+
                   }}
               />
               <Drawer.Screen
