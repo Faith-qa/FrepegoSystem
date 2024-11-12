@@ -9,6 +9,7 @@ https://docs.djangoproject.com/en/4.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
+import os
 from datetime import timedelta
 from pathlib import Path
 import django
@@ -34,6 +35,11 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['10.0.2.2', '127.0.0.1', 'frepegosystem.onrender.com']
 
+# URL prefix for static files
+STATIC_URL = '/static/'
+
+# Directory where static files will be collected in production
+STATIC_ROOT = BASE_DIR / 'staticfiles'  # or specify a different path as needed
 
 # Application definition
 
