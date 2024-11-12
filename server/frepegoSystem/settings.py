@@ -49,7 +49,8 @@ INSTALLED_APPS = [
     #'graphql_auth',
     #'django_filters',
     'barRestaurant',
-    'users'
+    #'users',
+    'booking'
 ]
 
 MIDDLEWARE = [
@@ -164,4 +165,4 @@ GRAPHQL_JWT = {
     "JWT_ALGORITHM": "HS256",
 }
 
-AUTH_USER_MODEL = 'users.CustomUser'
+#AUTH_USER_MODEL = 'users.CustomUser'
