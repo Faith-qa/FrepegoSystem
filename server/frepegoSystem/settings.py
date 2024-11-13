@@ -18,6 +18,10 @@ from django.utils.translation import gettext
 django.utils.translation.ugettext = gettext
 import mimetypes
 
+import pymysql
+pymysql.install_as_MySQLdb()
+
+
 mimetypes.add_type("text/javascript", ".js", True)
 
 
