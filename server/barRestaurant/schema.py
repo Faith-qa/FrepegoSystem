@@ -1,4 +1,6 @@
 # pos/schema.py
+from datetime import datetime
+
 import graphene
 from django.db import transaction
 from graphene_django.types import DjangoObjectType
@@ -32,8 +34,26 @@ class Query(graphene.ObjectType):
     all_tables = graphene.List(TableType)
     order_by_id = graphene.Field(OrderType, id=graphene.Int())
     pending_orders = graphene.List(OrderType)
+    all_orders = graphene.List(OrderType)
+    orders_by_dateRange = graphene.List(OrderType, start_date=graphene.String(), end_date=graphene.String())
 
-    #@login_required
+    def resolve_orders_by_dateRange(self, start_date, end_date):
+        # Parse the date strings into datetime objects
+        try:
+            start_date = datetime.strptime(start_date, "%Y-%m-%d")
+            end_date = datetime.strptime(end_date, "%Y-%m-%d")
+        except ValueError:
+            raise Exception("Invalid date format. Use 'YYYY-MM-DD'.")
+        # Ensure the date range is valid
+        if start_date > end_date:
+            raise Exception("start_date cannot be later than end_date.")
+        return Order.objects.filter(created_at__gte=start_date, created_at__lte=end_date)
+
+
+
+#@login_required
+    def resolve_all_orders(self, info, **kwargs):  # New resolver for all orders
+        return Order.objects.all()
     def resolve_all_menu_items(self, info, **kwargs):
         return MenuItem.objects.all()
 

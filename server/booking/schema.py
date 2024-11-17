@@ -8,20 +8,24 @@ from graphql import GraphQLError
 from datetime import datetime
 from django.db import transaction
 
+
 class RoomTypeType(DjangoObjectType):
     class Meta:
         model = RoomType
         fields = ("id", "name", "description", "price_per_night", "max_guests")
+
 
 class RoomType(DjangoObjectType):
     class Meta:
         model = Room
         fields = ("id", "room_number", "room_type", "is_available")
 
+
 class GuestType(DjangoObjectType):
     class Meta:
         model = Guest
         fields = ("id", "name", "phone_number", "id_number")
+
 
 class BookingType(DjangoObjectType):
     total_cost = graphene.Float()
@@ -32,6 +36,7 @@ class BookingType(DjangoObjectType):
 
     def resolve_total_cost(self, info):
         return self.total_cost()
+
 
 class PaymentType(DjangoObjectType):
     class Meta:
@@ -45,11 +50,14 @@ class Query(graphene.ObjectType):
     all_bookings = graphene.List(BookingType)
     booking_by_id = graphene.Field(BookingType, id=graphene.Int(required=True))
     available_rooms = graphene.List(RoomType, room_type=graphene.String(required=True))
+    bookings_pending_checkout = graphene.List(BookingType)
 
-
+    def resolve_bookings_pending_checkout(self, info, **kwargs):
+        return Booking.objects.filter(checkout_status="checkout_pending")
     def resolve_available_rooms(self, info, room_type):
         queryset = Room.objects.filter(is_available=True, room_type__name=room_type)
         return queryset
+
     def resolve_all_rooms(self, info):
         return Room.objects.all()
 
@@ -86,6 +94,35 @@ class CreateGuest(graphene.Mutation):
             id_number=id_number
         )
         return CreateGuest(guest=new_guest)
+
+
+class BookingCheckout(graphene.Mutation):
+    booking = graphene.Field(BookingType)
+
+    class Argument:
+        booking_id = graphene.String(required=True)
+
+    def mutate(self, info, booking_id):
+
+        try:
+            booking = Booking.objects.get(id=booking_id)
+            # find room
+            room = Room.objects.get(id=booking.room.id)
+            # update room status
+            room.is_available = True
+            room.save()
+            # update booking checkout status
+            booking.checkout_status = "checkout_complete"
+            booking.save()
+        except Booking.DoesNotExist:
+            raise Exception(f"Booking with ${booking_id} does not exist")
+        except Room.DoesNotExist:
+            raise GraphQLError("Room not found")
+        except Exception as e:
+            raise GraphQLError(f"An error occurred: {str(e)}")
+        return BookingCheckout(booking=booking)
+        # update room status to available
+
 
 class CreateBooking(graphene.Mutation):
     booking = graphene.Field(BookingType)
@@ -146,6 +183,8 @@ class CreateBooking(graphene.Mutation):
         except Exception as e:
             # If any error occurs, the transaction is rolled back automatically
             raise GraphQLError(f"An error occurred: {str(e)}")
+
+
 class CreatePayment(graphene.Mutation):
     payment = graphene.Field(PaymentType)
 

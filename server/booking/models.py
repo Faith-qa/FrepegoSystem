@@ -40,11 +40,13 @@ class Guest(models.Model):
 
 
 class Booking(models.Model):
+    CHECKOUT_STATUS_CHOICES = (("checkout_pending", "Checkout_pending"), ("checkout_complete", "Checkout_complete"))
     guests = models.ManyToManyField(Guest, related_name="bookings")  # Changed to Many-to-Many relationship
     room = models.ForeignKey(Room, on_delete=models.CASCADE, related_name="bookings")
     check_in = models.DateTimeField()
     check_out = models.DateTimeField()
     is_cancelled = models.BooleanField(default=False)
+    checkout_status = models.CharField(max_length=255, choices=CHECKOUT_STATUS_CHOICES, default="checkout_pending")
 
     def __str__(self):
         return f"Booking by {self.guest} for {self.room}"

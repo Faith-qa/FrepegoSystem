@@ -1,4 +1,4 @@
-{
+export default {
   "expo": {
     "name": "frepego",
     "slug": "frepego",
@@ -36,7 +36,8 @@
     },
     "extra": {
       "eas": {
-        "projectId": "f3aa94e4-36e2-4c1e-9280-693192de1495"
+        "projectId": "f3aa94e4-36e2-4c1e-9280-693192de1495",
+        "EXPO_PUBLIC_API_URL":"http://13.53.205.182/graphql/"
       }
     }
   }
