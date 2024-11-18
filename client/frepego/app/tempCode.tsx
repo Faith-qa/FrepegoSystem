@@ -1,19 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { Card, Icon } from "react-native-elements";
 import { DataTable } from "react-native-paper";
-import {View, Text, ScrollView, TouchableOpacity, StyleSheet, ActivityIndicator} from "react-native";
+import { View, Text, ScrollView } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
-import s from "./styles";
+import s from "../app/(app)/Dash_tables/styles";
 
-interface NewProps {
+interface DashTableScreenProps {
     items: any[];
     tableName: string;
-    loading: boolean;
 }
 
-const DashTableScreen: React.FC<NewProps> = ({ items, tableName,loading }) => {
+const DashTableScreen: React.FC<DashTableScreenProps> = ({ items, tableName }) => {
     const [page, setPage] = useState<number>(0);
-    const [numberOfItemsPerPageList] = useState([2, 3, 4]);
+    const [numberOfItemsPerPageList] = useState([5, 10, 15]);
     const [itemsPerPage, onItemsPerPageChange] = useState(numberOfItemsPerPageList[0]);
 
     useEffect(() => {
@@ -23,58 +21,61 @@ const DashTableScreen: React.FC<NewProps> = ({ items, tableName,loading }) => {
     const from = page * itemsPerPage;
     const to = Math.min((page + 1) * itemsPerPage, items.length);
 
-    // Flatten object for dynamic table generation
+    // Helper function to flatten nested objects
+// Helper function to flatten nested objects
+    // Helper function to flatten nested objects
     const flattenObject = (
         obj: Record<string, any>,
         prefix = ""
     ): Record<string, any> => {
-        return Object.keys(obj).reduce((acc, key) => {
+        return Object.keys(obj).reduce((acc: Record<string, any>, key: string) => {
             const value = obj[key];
             const newKey = prefix ? `${prefix}.${key}` : key;
-            if (typeof value === "object" && value !== null) {
+
+            if (typeof value === "object" && value !== null && !Array.isArray(value)) {
                 Object.assign(acc, flattenObject(value, newKey));
             } else {
                 acc[newKey] = value;
             }
+
             return acc;
-        }, {} as Record<string, any>);
+        }, {}); // Initialize `acc` as an empty object
     };
 
+
+    // Extract unique headers dynamically
+    const headers = items.length > 0 ? Object.keys(flattenObject(items[0])) : [];
+
     const flattenedItems = items.map((item) => flattenObject(item));
-    const headers = flattenedItems.length > 0 ? Object.keys(flattenedItems[0]) : [];
 
     return (
         <View style={s.container}>
-            {/* Table Header */}
             <LinearGradient colors={["#1976D2", "#42A5F5"]} style={s.header}>
                 <Text style={s.headerText}>{tableName}</Text>
-                <TouchableOpacity onPress={() => alert("Feature coming soon")}>
-                    <Icon name={"add"} size={24} color={"white"} />
-                </TouchableOpacity>
             </LinearGradient>
-
-            {/* Table Content */}
             <ScrollView horizontal>
                 <DataTable style={s.card}>
-                    {loading ? (
+                    {items.length === 0 ? (
                         <View style={{ alignItems: "center" }}>
-                            <ActivityIndicator size={"large"} color={"gray"}/>
+                            <Text style={{ margin: 3, fontSize: 12 }}>No data available</Text>
                         </View>
                     ) : (
                         <>
-                            {/* Table Headers */}
+                            {/* Dynamically render headers */}
                             <DataTable.Header>
-                                {headers.map((header) => (
-                                    <DataTable.Title key={header}>{header}</DataTable.Title>
+                                {headers.map((header, index) => (
+                                    <DataTable.Title key={index}>
+                                        {header.charAt(0).toUpperCase() + header.slice(1)}
+                                    </DataTable.Title>
                                 ))}
                             </DataTable.Header>
 
-                            {/* Table Rows */}
-                            {flattenedItems.slice(from, to).map((item, index) => (
-                                <DataTable.Row key={index}>
-                                    {headers.map((header) => (
-                                        <DataTable.Cell key={header}>
-                                            {item[header]?.toString() ?? ""}
+                            {/* Dynamically render rows */}
+                            {flattenedItems.slice(from, to).map((item: any, rowIndex: number) => (
+                                <DataTable.Row key={rowIndex}>
+                                    {headers.map((header, colIndex) => (
+                                        <DataTable.Cell key={colIndex}>
+                                            {item[header]?.toString() || "—"}
                                         </DataTable.Cell>
                                     ))}
                                 </DataTable.Row>
@@ -100,16 +101,4 @@ const DashTableScreen: React.FC<NewProps> = ({ items, tableName,loading }) => {
     );
 };
 
-const styles = StyleSheet.create({
-    newOrderButton: {
-        padding: 10,
-        height: 60,
-        width: 190,
-        borderRadius: 15,
-        justifyContent: "center",
-        alignItems: "center",
-        alignSelf: "center",
-    },
-});
-
-export default DashTableScreen;
+//export default DashTableScreen;

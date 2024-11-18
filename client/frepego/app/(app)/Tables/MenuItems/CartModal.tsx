@@ -55,7 +55,7 @@ const CartModal:React.FC<NewProps> = ({
             }
         })
         setOrderView(true)
-        alert(`order ${data.createOrder.order.orderNumber} successfully created`)
+        //alert(`order ${data.createOrder.order.orderNumber} successfully created`)
 
 
 

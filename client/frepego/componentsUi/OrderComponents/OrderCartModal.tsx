@@ -36,10 +36,7 @@ const OrderCartModal:React.FC<NewProps> = ({orderCart, openOrderCart,closeOrderC
 
 
     }
-    console.log("this is the first order",orderCart[0])
-    const completeOrder = () => {
-        // TODO Implement Apo
-    }
+
     const closeOrderView = () => {
         setOrderView(false)
     }

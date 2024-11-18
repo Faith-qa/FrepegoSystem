@@ -7,14 +7,22 @@
     "development": {
       "developmentClient": true,
       "distribution": "internal",
+      "env": {
+        "EXPO_PUBLIC_API_URL":"http://13.53.205.182/graphql/"
+      },
       "android": {
         "buildType": "apk",
         "gradleCommand": ":app:assembleRelease"
       }
     },
     "preview": {
-      "distribution": "internal"
-    },
+      "distribution": "internal",
+      "env": {
+        "EXPO_PUBLIC_API_URL":"http://13.53.205.182/graphql/"
+      },
+      "android": {
+        "buildType": "apk"
+      }},
     "production": {
       "autoIncrement": true
     }

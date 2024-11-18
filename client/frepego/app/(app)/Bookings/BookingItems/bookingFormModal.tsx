@@ -214,7 +214,7 @@ const BookingForm: React.FC<NewProps> = ({openBookingForm, closeBookingForm, roo
                 <TouchableOpacity><Text style={styles.moreInfo}>More info</Text></TouchableOpacity>
             </View>
             <TouchableOpacity
-                style={styles.buttonContainer}
+                style={[styles.buttonContainer,]}
                 onPress={handleCreateBooking}
             >
                 {loading ? (
@@ -273,7 +273,7 @@ const styles = StyleSheet.create({
     },
     section: {
         margin: 5,
-        marginBottom: 16,
+        //marginBottom: 16,
         backgroundColor: '#fff',
         padding: 12,
         borderRadius: 8,
@@ -332,6 +332,8 @@ const styles = StyleSheet.create({
         backgroundColor: "#007bff",
     },
     buttonContainer: {
+        //position: "absolute",
+        zIndex: 15,
         backgroundColor: "#007bff",
         borderRadius: 8,
         paddingVertical: 12,

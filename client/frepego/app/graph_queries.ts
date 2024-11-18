@@ -1,6 +1,28 @@
 import {gql, useQuery} from "@apollo/client";
 import {getPlatform} from "babel-preset-expo/build/common";
 
+
+
+
+export const ALL_ORDERS = gql `
+query{
+    allOrders{
+        id
+        orderNumber
+        orderItems {
+          id
+          menuItem{
+            id
+            title
+          }
+          quantity
+        }
+        createdAt
+        status
+        totalCharge
+      }
+}
+`
 export const CREATE_GUEST_MUTATION = gql `
 mutation CreateGuest($name: String!, $phone_number: String!, $id_number: String!) {
   createGuest(name: $name, phoneNumber: $phone_number, idNumber: $id_number) {

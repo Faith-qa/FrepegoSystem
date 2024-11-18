@@ -1,4 +1,4 @@
-export default {
+ {
   "expo": {
     "name": "frepego",
     "slug": "frepego",
@@ -21,7 +21,7 @@ export default {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.faith5991.frepego"
+      "package": "com.faith5991.frepego",
     },
     "web": {
       "bundler": "metro",
@@ -29,15 +29,23 @@ export default {
       "favicon": "./assets/images/favicon.png"
     },
     "plugins": [
-      "expo-router"
+      "expo-router",
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "usesCleartextTraffic": true
+          }
+        }
+      ]
+
     ],
     "experiments": {
       "typedRoutes": true
     },
     "extra": {
       "eas": {
-        "projectId": "f3aa94e4-36e2-4c1e-9280-693192de1495",
-        "EXPO_PUBLIC_API_URL":"http://13.53.205.182/graphql/"
+        "projectId": "f3aa94e4-36e2-4c1e-9280-693192de1495"
       }
     }
   }
