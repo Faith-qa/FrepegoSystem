@@ -1,223 +1,178 @@
-import React, {useState} from "react";
-import {Text, TouchableOpacity, View, StyleSheet, Alert, ActivityIndicator,Modal} from "react-native";
-import s from "@/app/(app)/Tables/MenuItems/styles";
-import DateTimePicker from "@react-native-community/datetimepicker";
-import {Icon} from "react-native-elements";
+import React, { useState } from "react";
+import { useQuery } from "@apollo/client";
+import { Alert, Modal, Text, TouchableOpacity, View, ActivityIndicator, StyleSheet } from "react-native";
+import { GET_DATA_FROM_TABLE } from "@/app/graph_queries";
+import { json2csv } from "json-2-csv";
+import * as FileSystem from "expo-file-system";
+import { StorageAccessFramework } from "expo-file-system";
 
-
-interface NewProps{
+interface CsvModalProps {
+    startDate: string;
+    endDate: string;
     open: boolean;
-    closeModal: ()=> void
+    closeModal: () => void;
+    tableName: string;
+    closeHandleDate: () => void;
 }
-const csv_modal:React.FC<NewProps> = ({
-    open,closeModal
-                                      }) => {
-    const [openCheckinPicker, setOpenCheckinPicker] = useState(false);
-    const [openCheckoutPicker, setOpenCheckoutPicker] = useState(false);
-    const [from, setFrom] = useState<Date|null>(null)
-    const [to, setTo] = useState<Date|null>(null)
-    const[loading, setLoading] = useState(false)
 
-    // handle download csv
-    const handleCSVDownload = () => {
-        alert("coming soon")
-    }
+const CsvModal: React.FC<CsvModalProps> = ({ open, startDate, closeModal, endDate, tableName }) => {
+    const [isLoading, setIsLoading] = useState(false);
+    const { loading, error, data } = useQuery(GET_DATA_FROM_TABLE, {
+        variables: { tableName, startDate, endDate },
+    });
 
-    const handleCheckinDateChange = (event: any, selectedDate?: Date) => {
-        setOpenCheckinPicker(false);
-        if (selectedDate) {
-            setFrom(selectedDate);
+    const flattenData = (tableName: string, data: any[]): any[] => {
+        if (tableName === "orders") {
+            return data.map((item: any) => ({
+                id: item.id,
+                orderNumber: item.orderNumber,
+                tableNumber: item.table?.number,
+                status: item.status,
+                totalCharge: item.totalCharge,
+                orderItems: item.orderItems
+                    ?.map(
+                        (orderItem: any) =>
+                            `${orderItem.menuItem.title} (x${orderItem.quantity} @ ${orderItem.menuItem.price})`
+                    )
+                    .join("; "),
+            }));
         }
+        // Default: return raw data or custom logic for other tables
+        return data;
     };
 
-    const handleCheckoutDateChange = (event: any, selectedDate?: Date) => {
-        setOpenCheckoutPicker(false);
-        if (selectedDate) {
-            if (from && selectedDate <= from) {
-                Alert.alert("Invalid date", "Checkout date cannot be before or the same as check-in date.");
-                return 0;
+    const handleDownload = async () => {
+        try {
+            setIsLoading(true);
+
+            if (!data?.dataFromTable || data.dataFromTable.length === 0) {
+                Alert.alert("No Data", "No data available for download.");
+                return;
             }
-            setTo(selectedDate);
+
+            const parsedData = data.dataFromTable.map((item: string) => JSON.parse(item));
+            const flattenedData = flattenData(tableName, parsedData);
+
+            console.log("Flattened Data:", flattenedData);
+
+            const csvData = await json2csv(flattenedData);
+            console.log("Converted CSV Data:", csvData);
+
+            const permissions = await StorageAccessFramework.requestDirectoryPermissionsAsync();
+            if (!permissions.granted) {
+                Alert.alert("Permission Denied", "Storage access permission is required to save the CSV file.");
+                return;
+            }
+
+            const fileName = `data_${new Date().toISOString().slice(0, 10)}_${Math.random().toString(36).substr(2, 9)}.csv`;
+            const fileUri = await StorageAccessFramework.createFileAsync(
+                permissions.directoryUri,
+                fileName,
+                "application/csv"
+            );
+
+            await FileSystem.writeAsStringAsync(fileUri, csvData, {
+                encoding: FileSystem.EncodingType.UTF8,
+            });
+
+            console.log("CSV file saved:", fileUri);
+            Alert.alert("CSV", "Download successful!");
+        } catch (error: any) {
+            console.error("Error saving CSV:", error);
+            Alert.alert("Error", error.message || "Failed to save the file.");
+        } finally {
+            setIsLoading(false);
+            closeModal();
         }
     };
-    return(<>
-        <Modal transparent={true} animationType="slide" visible={open}>
-            <View style={styles.container}>
-        <View style={styles.header}>
-            <TouchableOpacity style={{margin: 20}} onPress={()=>closeModal()}>
-                <Icon name="arrow-back" size={24} color="black" />
-            </TouchableOpacity>
-            <Text style={styles.headerTitle}>Confirm Create Booking</Text>
-        </View>
-        <View style={styles.section}>
-            <Text style={styles.sectionTitle}>Dates</Text>
-            <View style={styles.checkinCheckoutCon}>
-                <View style={{ alignItems: "center" }}>
-                    <Text>Check-in Date</Text>
-                    <TouchableOpacity onPress={() => setOpenCheckinPicker(true)} style={styles.selectDateCont}>
-                        <Text style={s.quantityText}>
-                            {from ? from.toLocaleDateString() : "Select a date"}
-                        </Text>
-                    </TouchableOpacity>
-                    {openCheckinPicker && (
-                        <DateTimePicker
-                            value={from || new Date()}
-                            mode="date"
-                            display="default"
-                            onChange={handleCheckinDateChange}
-                        />
-                    )}
-                </View>
 
-                <View style={{ alignItems: "center" }}>
-                    <Text>Check-out Date</Text>
-                    <TouchableOpacity onPress={() => setOpenCheckoutPicker(true)} style={styles.selectDateCont}>
-                        <Text style={s.quantityText}>
-                            {to ? to.toLocaleDateString() : "Select a date"}
-                        </Text>
-                    </TouchableOpacity>
-                    {openCheckoutPicker && (
-                        <DateTimePicker
-                            value={to || new Date()}
-                            mode="date"
-                            display="default"
-                            onChange={handleCheckoutDateChange}
-                        />
+    return (
+        <Modal visible={open} animationType="slide" transparent={true}>
+            <View style={styles.modalContainer}>
+                <View style={styles.modalContent}>
+                    {loading || isLoading ? (
+                        <View style={styles.loadingContainer}>
+                            <ActivityIndicator size="large" color="#0000ff" />
+                            <Text style={styles.message}>Processing Data...</Text>
+                        </View>
+                    ) : error ? (
+                        <Text style={styles.error}>Error Retrieving Data: {error.message}</Text>
+                    ) : (
+                        <>
+                            <Text style={styles.message}>
+                                Data is available. Click "Download" to save as CSV.
+                            </Text>
+                            <TouchableOpacity style={styles.downloadButton} onPress={handleDownload}>
+                                <Text style={styles.downloadButtonText}>Download</Text>
+                            </TouchableOpacity>
+                        </>
                     )}
+                    <TouchableOpacity style={styles.closeButton} onPress={closeModal}>
+                        <Text style={styles.closeButtonText}>Close</Text>
+                    </TouchableOpacity>
                 </View>
-            </View>
-        </View>
-        <TouchableOpacity
-            style={[styles.buttonContainer,]}
-            onPress={handleCSVDownload}
-        >
-            {loading ? (
-                <ActivityIndicator size="small" color="#fff" />
-            ) : (
-                <Text style={s.cartText}>Create Booking</Text>
-            )}
-        </TouchableOpacity>
             </View>
         </Modal>
+    );
+};
 
-    </>)
+export default CsvModal;
 
-    //
-}
-
-const styles= StyleSheet.create({
-    container: {
+// Styles
+const styles = StyleSheet.create({
+    modalContainer: {
         flex: 1,
+        backgroundColor: "rgba(0,0,0,0.5)",
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor: "rgba(0, 0, 0, 0.5)",
-        //margin:10
     },
-    header: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        padding: 15,
-    },
-    backButton: {
-        marginRight: 10,
-    },
-    backArrow: {
-        fontSize: 20,
-    },
-    headerTitle: {
-        fontSize: 18,
-        fontWeight: '600',
-    },
-    propertyInfo: {
-        flexDirection: 'row',
-        padding: 15,
-    },
-    propertyImage: {
-        width: 70,
-        height: 70,
-        borderRadius: 8,
-    },
-    propertyText: {
-        marginLeft: 10,
-        flex: 1,
-    },
-    propertyTitle: {
-        fontSize: 16,
-        fontWeight: '600',
-    },
-    propertySubtitle: {
-        fontSize: 14,
-        color: '#555',
-        marginVertical: 2,
-    },
-    section: {
-        margin: 5,
-        //marginBottom: 16,
-        backgroundColor: '#fff',
-        padding: 12,
-        borderRadius: 8,
-        shadowColor: '#000',
-        shadowOpacity: 0.1,
-        shadowRadius: 5,
-        shadowOffset: { width: 0, height: 1 },
-        elevation: 1,
-    },
-    sectionTitle: {
-        fontSize: 16,
-        fontWeight: '600',
-        marginBottom: 10,
-    },
-    row: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        marginVertical: 5,
-    },
-    label: {
-        fontSize: 14,
-        color: '#555',
-    },
-    value: {
-        fontSize: 14,
-        fontWeight: '600',
-    },
-    editButton: {
-        fontSize: 14,
-        color: '#007bff',
-    },
-    totalLabel: {
-        fontWeight: '700',
-    },
-    totalValue: {
-        fontWeight: '700',
-        fontSize: 16,
-    },
-    moreInfo: {
-        fontSize: 14,
-        color: '#007bff',
-        textAlign: 'right',
-        marginTop: 5,
-    },
-    checkinCheckoutCon: {
-        padding: 10,
-        flexDirection: "row",
-        justifyContent: "space-between",
-        alignItems: "center",
-    },
-    selectDateCont: {
+    modalContent: {
+        backgroundColor: "#fff",
+        padding: 20,
         borderRadius: 10,
-        margin: 5,
-        padding: 10,
-        backgroundColor: "#007bff",
-    },
-    buttonContainer: {
-        //position: "absolute",
-        zIndex: 15,
-        backgroundColor: "#007bff",
-        borderRadius: 8,
-        paddingVertical: 12,
-        marginTop: 24,
+        width: "80%",
         alignItems: "center",
+    },
+    loadingContainer: {
+        alignItems: "center",
+        marginBottom: 20,
+    },
+    message: {
+        fontSize: 16,
+        color: "#333",
+        textAlign: "center",
+        marginVertical: 10,
+    },
+    error: {
+        fontSize: 16,
+        color: "red",
+        textAlign: "center",
+        marginVertical: 10,
+    },
+    downloadButton: {
+        backgroundColor: "#007bff",
+        padding: 10,
+        borderRadius: 5,
+        marginTop: 15,
+        width: "80%",
+        alignItems: "center",
+    },
+    downloadButtonText: {
+        color: "#fff",
+        fontWeight: "bold",
+        fontSize: 16,
+    },
+    closeButton: {
+        backgroundColor: "#d9534f",
+        padding: 10,
+        borderRadius: 5,
+        marginTop: 10,
+        width: "80%",
+        alignItems: "center",
+    },
+    closeButtonText: {
+        color: "#fff",
+        fontWeight: "bold",
+        fontSize: 16,
     },
 });
-export default csv_modal;

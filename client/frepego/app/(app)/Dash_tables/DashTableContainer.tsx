@@ -4,17 +4,23 @@ import { ImageBackground, Text } from "react-native";
 import s from "@/app/(app)/Tables/styles";
 import { useQuery } from "@apollo/client";
 import { ALL_ORDERS } from "@/app/graph_queries";
+import { ALL_BOOKINGS } from "@/app/graph_queries";  // Assuming you have this query defined
 
 const DashTableContainer: React.FC = () => {
-    const { data, loading, error } = useQuery(ALL_ORDERS);
+    // Fetch orders data
+    const { data: ordersData, loading: ordersLoading, error: ordersError } = useQuery(ALL_ORDERS);
+
+    // Fetch bookings data
+    const { data: bookingsData, loading: bookingsLoading, error: bookingsError } = useQuery(ALL_BOOKINGS);
 
     const [orders, setOrders] = useState<any[]>([]);
+    const [bookings, setBookings] = useState<any[]>([]);
 
-    // Transform query data for DashTableScreen
+    // Transform orders query data for DashTableScreen
     useEffect(() => {
-        if (data) {
+        if (ordersData) {
             setOrders(
-                data.allOrders.map((order: any) => ({
+                ordersData.allOrders.map((order: any) => ({
                     id: order.id,
                     orderNumber: order.orderNumber,
                     createdAt: order.createdAt,
@@ -27,9 +33,29 @@ const DashTableContainer: React.FC = () => {
                 }))
             );
         }
-    }, [data]);
+    }, [ordersData]);
 
-    const tableNames = ["Orders"];
+    // Transform bookings query data for DashTableScreen
+    useEffect(() => {
+        if (bookingsData) {
+            setBookings(
+                bookingsData.allBookings.map((booking: any) => ({
+                    id: booking.id,
+                    checkIn: booking.checkIn,
+                    checkOut: booking.checkOut,
+                    totalCharge: booking.totalCharge,
+                    checkoutStatus: booking.checkoutStatus,
+                    isCancelled: booking.isCancelled,
+                    guests: booking.guests.map((guest: any) => guest.name), // Assuming guest has 'name' field
+                }))
+            );
+        }
+    }, [bookingsData]);
+
+    // Check if any query is still loading
+    const isLoading = ordersLoading || bookingsLoading;
+
+    const tableNames = ["orders", "bookings"];
 
     return (
         <ImageBackground
@@ -38,7 +64,9 @@ const DashTableContainer: React.FC = () => {
             }}
             style={s.background}
         >
-            <DashTableScreen items={orders} tableName={tableNames[0]} loading={loading} />
+            {/* Display tables for both orders and bookings */}
+            <DashTableScreen items={orders} tableName={tableNames[0]} loading={isLoading} />
+            <DashTableScreen items={bookings} tableName={tableNames[1]} loading={isLoading} />
         </ImageBackground>
     );
 };

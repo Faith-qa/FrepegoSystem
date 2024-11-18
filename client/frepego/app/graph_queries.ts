@@ -1,8 +1,70 @@
 import {gql, useQuery} from "@apollo/client";
 import {getPlatform} from "babel-preset-expo/build/common";
 
+export const ALL_BOOKINGS = gql`
+    query{
+    allBookings {
+    id
+    guests{
+        id  
+    }
+    totalCharge
+    room{
+        id
+      roomNumber
+    }
+    checkOut
+    checkIn
+    checkoutStatus
+    isCancelled
+  }
+}
+`
+export const CHECKOUT_BOOKING = gql`
+mutation CompleteBookingCheckout($bookingId: String!) {
+  bookingCheckout(bookingId: $bookingId) {
+    booking {
+      id
+      checkoutStatus
+      room {
+        id
+        isAvailable
+      }
+    }
+  }
+}
+`
 
-
+export const PENDING_BOOKINGS = gql`
+query BookingsPendingCheckout{
+    bookingsPendingCheckout {
+    id
+    guests{
+        id
+        name
+        phoneNumber  
+    }
+    totalCharge
+    room{
+        id
+      roomNumber
+    }
+    checkOut
+    checkIn
+    checkoutStatus
+    isCancelled
+  }
+  }
+`
+export const GET_DATA_FROM_TABLE = gql`
+  query GetDataFromTable($tableName: String!, $startDate: String!, $endDate: String!) {
+    dataFromTable(
+      tableName: $tableName,
+      startDate: $startDate,
+      endDate: $endDate
+    )
+  }
+`;
 
 export const ALL_ORDERS = gql `
 query{

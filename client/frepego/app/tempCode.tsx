@@ -1,104 +1,130 @@
-import React, { useEffect, useState } from "react";
-import { DataTable } from "react-native-paper";
-import { View, Text, ScrollView } from "react-native";
-import { LinearGradient } from "expo-linear-gradient";
-import s from "../app/(app)/Dash_tables/styles";
+import React, {useState} from "react";
+import { useQuery } from "@apollo/client";
+import { Alert, Modal, Text, TouchableOpacity, View, ActivityIndicator, StyleSheet } from "react-native";
+import {GET_DATA_FROM_TABLE} from "@/app/graph_queries";
+import {json2csv} from "json-2-csv";
+import * as FileSystem from "expo-file-system";
 
-interface DashTableScreenProps {
-    items: any[];
+interface NewProps {
+    startDate: string;
+    endDate: string;
+    open: boolean;
+    closeModal: () => void;
     tableName: string;
+    closeHandleDate: ()=> void;
 }
 
-const DashTableScreen: React.FC<DashTableScreenProps> = ({ items, tableName }) => {
-    const [page, setPage] = useState<number>(0);
-    const [numberOfItemsPerPageList] = useState([5, 10, 15]);
-    const [itemsPerPage, onItemsPerPageChange] = useState(numberOfItemsPerPageList[0]);
+const CsvModal: React.FC<NewProps> = ({ open, startDate, closeModal, endDate, tableName }) => {
+    const[isLoading, setIsLoading] = useState(false)
+    const { loading, error, data } = useQuery(GET_DATA_FROM_TABLE, {
+        variables: { tableName, startDate, endDate },
+    });
 
-    useEffect(() => {
-        setPage(0);
-    }, [itemsPerPage]);
+    const handleDownload = async() => {
+        try{
 
-    const from = page * itemsPerPage;
-    const to = Math.min((page + 1) * itemsPerPage, items.length);
+            const csvData = json2csv(data.dataFromTable)
+            const fileUri = FileSystem.documentDirectory+'data.csv'
+            await FileSystem.writeAsStringAsync(fileUri, csvData, {
+                encoding: FileSystem.EncodingType.UTF8
+            })
+            console.log("csv file saved")
+            Alert.alert("CSV", "dowload successful")
+            closeModal()
 
-    // Helper function to flatten nested objects
-// Helper function to flatten nested objects
-    // Helper function to flatten nested objects
-    const flattenObject = (
-        obj: Record<string, any>,
-        prefix = ""
-    ): Record<string, any> => {
-        return Object.keys(obj).reduce((acc: Record<string, any>, key: string) => {
-            const value = obj[key];
-            const newKey = prefix ? `${prefix}.${key}` : key;
+        }catch(error:any){
+            console.error('Error saving CSV:', error);
+            Alert.alert('Error', error.message);
+        }
 
-            if (typeof value === "object" && value !== null && !Array.isArray(value)) {
-                Object.assign(acc, flattenObject(value, newKey));
-            } else {
-                acc[newKey] = value;
-            }
-
-            return acc;
-        }, {}); // Initialize `acc` as an empty object
     };
 
-
-    // Extract unique headers dynamically
-    const headers = items.length > 0 ? Object.keys(flattenObject(items[0])) : [];
-
-    const flattenedItems = items.map((item) => flattenObject(item));
-
     return (
-        <View style={s.container}>
-            <LinearGradient colors={["#1976D2", "#42A5F5"]} style={s.header}>
-                <Text style={s.headerText}>{tableName}</Text>
-            </LinearGradient>
-            <ScrollView horizontal>
-                <DataTable style={s.card}>
-                    {items.length === 0 ? (
-                        <View style={{ alignItems: "center" }}>
-                            <Text style={{ margin: 3, fontSize: 12 }}>No data available</Text>
+        <Modal visible={open} animationType="slide" transparent={true}>
+            <View style={styles.modalContainer}>
+                <View style={styles.modalContent}>
+                    {loading && (
+                        <View style={styles.loadingContainer}>
+                            <ActivityIndicator size="large" color="#0000ff" />
+                            <Text style={styles.message}>Retrieving Data...</Text>
                         </View>
-                    ) : (
-                        <>
-                            {/* Dynamically render headers */}
-                            <DataTable.Header>
-                                {headers.map((header, index) => (
-                                    <DataTable.Title key={index}>
-                                        {header.charAt(0).toUpperCase() + header.slice(1)}
-                                    </DataTable.Title>
-                                ))}
-                            </DataTable.Header>
-
-                            {/* Dynamically render rows */}
-                            {flattenedItems.slice(from, to).map((item: any, rowIndex: number) => (
-                                <DataTable.Row key={rowIndex}>
-                                    {headers.map((header, colIndex) => (
-                                        <DataTable.Cell key={colIndex}>
-                                            {item[header]?.toString() || "—"}
-                                        </DataTable.Cell>
-                                    ))}
-                                </DataTable.Row>
-                            ))}
-
-                            {/* Pagination */}
-                            <DataTable.Pagination
-                                page={page}
-                                numberOfPages={Math.ceil(items.length / itemsPerPage)}
-                                onPageChange={setPage}
-                                label={`${from + 1}-${to} of ${items.length}`}
-                                numberOfItemsPerPageList={numberOfItemsPerPageList}
-                                numberOfItemsPerPage={itemsPerPage}
-                                onItemsPerPageChange={onItemsPerPageChange}
-                                showFastPaginationControls
-                                selectPageDropdownLabel={"Rows per page"}
-                            />
-                        </>
                     )}
-                </DataTable>
-            </ScrollView>
-        </View>
+                    {error && <Text style={styles.error}>Error Retrieving Data: {error.message}</Text>}
+                    {data && (
+                        <Text style={styles.message}>
+                            Data is available. Click "Download" to initiate download.
+                        </Text>
+                    )}
+
+                    {!error && <TouchableOpacity style={styles.downloadButton} onPress={handleDownload}>
+                        <Text style={styles.downloadButtonText}>Download</Text>
+                    </TouchableOpacity>}
+                    <TouchableOpacity style={styles.closeButton} onPress={closeModal}>
+                        <Text style={styles.closeButtonText}>Close</Text>
+                    </TouchableOpacity>
+                </View>
+            </View>
+        </Modal>
     );
 };
 
-//export default DashTableScreen;
+//export default CsvModal;
+
+// Styles
+const styles = StyleSheet.create({
+    modalContainer: {
+        flex: 1,
+        backgroundColor: "rgba(0,0,0,0.5)",
+        justifyContent: "center",
+        alignItems: "center",
+    },
+    modalContent: {
+        backgroundColor: "#fff",
+        padding: 20,
+        borderRadius: 10,
+        width: "80%",
+        alignItems: "center",
+    },
+    loadingContainer: {
+        alignItems: "center",
+        marginBottom: 20,
+    },
+    message: {
+        fontSize: 16,
+        color: "#333",
+        textAlign: "center",
+        marginVertical: 10,
+    },
+    error: {
+        fontSize: 16,
+        color: "red",
+        textAlign: "center",
+        marginVertical: 10,
+    },
+    downloadButton: {
+        backgroundColor: "#007bff",
+        padding: 10,
+        borderRadius: 5,
+        marginTop: 15,
+        width: "80%",
+        alignItems: "center",
+    },
+    downloadButtonText: {
+        color: "#fff",
+        fontWeight: "bold",
+        fontSize: 16,
+    },
+    closeButton: {
+        backgroundColor: "#d9534f",
+        padding: 10,
+        borderRadius: 5,
+        marginTop: 10,
+        width: "80%",
+        alignItems: "center",
+    },
+    closeButtonText: {
+        color: "#fff",
+        fontWeight: "bold",
+        fontSize: 16,
+    },
+});

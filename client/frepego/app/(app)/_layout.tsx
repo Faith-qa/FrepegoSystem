@@ -12,12 +12,15 @@ import OrderCartModal from "@/componentsUi/OrderComponents/OrderCartModal";
 import {useQuery} from "@apollo/client";
 import {PENDING_ORDERS_QUERY} from "@/app/graph_queries";
 import {useEventSource} from "@/app/SSEContext";
+import BookingCartModal from "@/componentsUi/BookingPage/BookingCartModal";
+import BookingCartContainer from "../../componentsUi/BookingPage/BookingCartContainer";
 
 
 export default function AppLayout() {
     const { session, isLoading } = useSession();
     const [pendingOrders, setPendingOrders] = useState<any[]>([]);
     const [openOrderCart, setOpenOrderCart] = useState(false);
+    const [openBookingCart, setOpenBookingCart] = useState(false)
     const { data, error, loading } = useQuery(PENDING_ORDERS_QUERY);
 
 
@@ -27,7 +30,6 @@ export default function AppLayout() {
         if (data) {
             setPendingOrders(data.pendingOrders);
             // Optional: Add additional side effects here, e.g., notifications
-            console.log("Pending orders updated:", pendingOrders[0]);
         }
     }, [data]);
 
@@ -122,8 +124,12 @@ export default function AppLayout() {
                     name={"Bookings"}
                     options={{
                         drawerLabel: "Book a room",
-                        title: 'Create a booking',
+                        title: 'New Booking',
                         drawerLabelStyle: { color: "white" },
+                        headerRight: () => (
+                            <BookingCartContainer/>
+                        ),
+
                     }}
                 />
                 <Drawer.Screen

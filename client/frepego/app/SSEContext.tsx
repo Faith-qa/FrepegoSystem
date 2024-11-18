@@ -14,7 +14,7 @@ export const EventSourceProvider: React.FC<{ children: ReactNode }> = ({ childre
         const eventSource = new RNEventSource('http://10.0.2.2:8000/order-update/');
         eventSource.addEventListener('message', (data: any) => {
             //setOrders(data.data)
-            console.log('started the watch orders, orders', data);     })
+            console.log('started the watch orders, orders', );     })
         /*console.log("mamamama")
         const listener = (event: any)=>{
             console.log("hello mamamama")

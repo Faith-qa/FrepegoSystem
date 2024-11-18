@@ -4,6 +4,8 @@ import { DataTable } from "react-native-paper";
 import {View, Text, ScrollView, TouchableOpacity, StyleSheet, ActivityIndicator} from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import s from "./styles";
+import Csv_modal from "@/app/(app)/Dash_tables/csv_modal";
+import HandleDateModal from "@/app/(app)/Dash_tables/HandleDateModal";
 
 interface NewProps {
     items: any[];
@@ -15,10 +17,16 @@ const DashTableScreen: React.FC<NewProps> = ({ items, tableName,loading }) => {
     const [page, setPage] = useState<number>(0);
     const [numberOfItemsPerPageList] = useState([2, 3, 4]);
     const [itemsPerPage, onItemsPerPageChange] = useState(numberOfItemsPerPageList[0]);
+    const [opencsv, setOpencsv] = useState(false)
 
     useEffect(() => {
         setPage(0);
     }, [itemsPerPage]);
+
+    //close csv modal
+    const closecsv = () =>{
+        setOpencsv(false)
+    }
 
     const from = page * itemsPerPage;
     const to = Math.min((page + 1) * itemsPerPage, items.length);
@@ -48,9 +56,10 @@ const DashTableScreen: React.FC<NewProps> = ({ items, tableName,loading }) => {
             {/* Table Header */}
             <LinearGradient colors={["#1976D2", "#42A5F5"]} style={s.header}>
                 <Text style={s.headerText}>{tableName}</Text>
-                <TouchableOpacity onPress={() => alert("Feature coming soon")}>
+                <TouchableOpacity onPress={() => setOpencsv(true)}>
                     <Icon name={"add"} size={24} color={"white"} />
                 </TouchableOpacity>
+                <HandleDateModal open={opencsv} close={closecsv} tableName={tableName}/>
             </LinearGradient>
 
             {/* Table Content */}

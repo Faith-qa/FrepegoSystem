@@ -21,7 +21,7 @@
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.faith5991.frepego",
+      "package": "com.faith5991.frepego"
     },
     "web": {
       "bundler": "metro",
@@ -41,7 +41,6 @@
 
     ],
     "experiments": {
-      "typedRoutes": true
     },
     "extra": {
       "eas": {
