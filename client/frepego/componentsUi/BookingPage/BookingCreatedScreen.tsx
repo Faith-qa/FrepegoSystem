@@ -4,6 +4,7 @@ import {Icon} from "react-native-elements";
 import {useMutation} from "@apollo/client";
 import {CHECKOUT_BOOKING, UPDATE_ORDER_STATUS} from "@/app/graph_queries";
 import s from "@/app/(app)/Tables/MenuItems/styles";
+import {useCart} from "@/app/CartContext";
 
 interface NewProps {
     createOrderView: boolean;
@@ -11,31 +12,29 @@ interface NewProps {
     booking: any;
     //closeCart?: () => void;
     //command: "continue" | "complete the order";
-    setOrderCart?: React.Dispatch<React.SetStateAction<any[]>>
+    //setOrderCart?: React.Dispatch<React.SetStateAction<any[]>>
 }
 
 const BookingCreatedScreen: React.FC<NewProps> = ({
                                                     createOrderView,
                                                     closeCreatedOrder,
                                                     booking,
-                                                    setOrderCart
                                                 }) => {
     const [bookingCheckout, {loading, error, data}] = useMutation(CHECKOUT_BOOKING);
-
+    const {removeFromBookingCart} = useCart()
     if (!booking) return null;
 
     const handleCompleteOrder = async () => {
+        console.log(booking.id)
         try {
-            await bookingCheckout({
+            const {data} =await bookingCheckout({
                 variables:{
                     bookingId: booking.id
                 }
             })
 
-            if (setOrderCart) {
-                setOrderCart(prevCart => prevCart.filter(item => item.id !== booking.id));
-            }
-            closeCreatedOrder();
+                removeFromBookingCart(booking.id)
+                closeCreatedOrder();
         } catch (err) {
             console.error("Error completing the order:", err);
         }

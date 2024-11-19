@@ -5,9 +5,10 @@ import BookingForm from "@/app/(app)/Bookings/BookingItems/bookingFormModal";
 
 
 interface NewProps{
-    item:any
+    item:any,
+    removeItemFromList:(itemid: string)=>void;
 }
-const BookingItem:React.FC<NewProps> = ({item})=>{
+const BookingItem:React.FC<NewProps> = ({item, removeItemFromList})=>{
     const [openBookingForm, setOpenBookingForm] = useState(false)
 
     const closeForm = () => {
@@ -24,7 +25,7 @@ const BookingItem:React.FC<NewProps> = ({item})=>{
                 <Text style={s.itemPrice}>Ksh {item.roomType.pricePerNight}</Text>
                 <Text style={s.itemDescription}>{item.roomType.description}</Text>
             </View></TouchableOpacity>
-            <BookingForm roomDetails={item} openBookingForm={openBookingForm} closeBookingForm={closeForm}/>
+            <BookingForm roomDetails={item} openBookingForm={openBookingForm} closeBookingForm={closeForm} cleanList={removeItemFromList}/>
         </View>
     )
 }

@@ -11,20 +11,18 @@ import {useMutation} from "@apollo/client";
 import {UPDATE_ORDER_STATUS} from "@/app/graph_queries";
 import BookingCreatedScreen from "@/componentsUi/BookingPage/BookingCreatedScreen";
 import BookingItemCont from "@/componentsUi/BookingPage/BookingCartItem";
-
+import {useCart} from "@/app/CartContext";
 interface NewProps{
-    bookingCart: any[];
     //createOrder: (newOrder:OrderItem)=>Promise<void>;
     //completeOrder: (id: OrderItem["id"])=>Promise<void>;
     closeOrderCart: ()=>void;
     openOrderCart: boolean;
-    setOrderCart: React.Dispatch<React.SetStateAction<any[]>>; // Correct type for state setter
 
 }
 
-const BookingCartModal:React.FC<NewProps> = ({bookingCart, openOrderCart,closeOrderCart,setOrderCart})=> {
+const BookingCartModal:React.FC<NewProps> = ({ openOrderCart,closeOrderCart})=> {
     const [orderView, setOrderView, ] = useState(false)
-
+    const {bookingCart, } = useCart()
 
 
     const closeOrderView = () => {

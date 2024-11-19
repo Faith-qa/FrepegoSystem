@@ -11,7 +11,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import OrderCartModal from "@/componentsUi/OrderComponents/OrderCartModal";
 import {useQuery} from "@apollo/client";
 import {PENDING_ORDERS_QUERY} from "@/app/graph_queries";
-import {useEventSource} from "@/app/SSEContext";
+import {useEventSource} from "@/app/CartContext";
 import BookingCartModal from "@/componentsUi/BookingPage/BookingCartModal";
 import BookingCartContainer from "../../componentsUi/BookingPage/BookingCartContainer";
 

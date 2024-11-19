@@ -16,16 +16,17 @@ import {Icon} from "react-native-elements";
 import GuestDetailsModal from "@/componentsUi/BookingPage/GuestDetailsModal";
 import {useMutation} from "@apollo/client";
 import {CREATE_BOOKING_MUTATION} from "@/app/graph_queries";
+import {useCart} from "@/app/CartContext";
 
 interface NewProps {
     roomDetails?: any,
     boookingDetails?:any,
     openBookingForm: boolean;
     closeBookingForm: ()=>void;
-    setBookingCart?:React.Dispatch<React.SetStateAction<any[]>>
+    cleanList:(itemId:string)=>void;
 }
 
-const BookingForm: React.FC<NewProps> = ({openBookingForm, closeBookingForm, roomDetails, setBookingCart}) => {
+const BookingForm: React.FC<NewProps> = ({openBookingForm, closeBookingForm, roomDetails, cleanList}) => {
     const [checkin, setCheckin] = useState<Date | null>(null);
     const [checkout, setCheckout] = useState<Date | null>(null);
     const [openCheckinPicker, setOpenCheckinPicker] = useState(false);
@@ -34,11 +35,14 @@ const BookingForm: React.FC<NewProps> = ({openBookingForm, closeBookingForm, roo
     const [guestids, setGuestids] = useState<any[]>([])
     const [createBooking, {loading, error, data}] = useMutation(CREATE_BOOKING_MUTATION)
     const image = "https://images.unsplash.com/photo-1445991842772-097fea258e7b?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+    const {addToBookingCart} = useCart()
+
     const closeGuestInfo = ()=>{
         setOpenGuestInfo(false)
     }
 
     const handleCreateBooking = async() => {
+
         try{
         if (guestids.length == 0 || guestids.length > 2){
             throw Error("guest info needed")
@@ -47,7 +51,7 @@ const BookingForm: React.FC<NewProps> = ({openBookingForm, closeBookingForm, roo
             throw Error("provide checkin and checkout dates")
         }
         const flatIds = guestids.flatMap(Object.values)
-        await createBooking({
+        const {data} = await createBooking({
             variables: {
                 guestIds: flatIds,
                 roomId: roomDetails.id,
@@ -55,10 +59,16 @@ const BookingForm: React.FC<NewProps> = ({openBookingForm, closeBookingForm, roo
                 checkOut: checkout.toISOString().slice(0, 19),
             }
         })
-            if(setBookingCart){
-                setBookingCart(prevCart=>prevCart.filter(item=> item.id !== roomDetails.id))
+            console.log("this is:", data.createBooking.booking)
+            addToBookingCart(data.createBooking.booking)
+            cleanList(roomDetails.id)
+            closeBookingForm()
+
+            /*if(setBookingCart){
+                console.log("mama i made it")
+                setBookingCart(prevCart=>prevCart.filter(item=> item.id !==roomDetails.id))
                 closeBookingForm()
-            }
+            }*/
 
 
         }

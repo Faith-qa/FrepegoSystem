@@ -5,9 +5,10 @@ import BookingItem from "@/app/(app)/Bookings/BookingItems/BookingItem";
 
 interface NewProps {
     data: any[];
+    removeFromAvailableRooms: (itemid:string)=>void
 }
 
-const BookingItemScreen: React.FC<NewProps> = ({ data }) => {
+const BookingItemScreen: React.FC<NewProps> = ({ data, removeFromAvailableRooms }) => {
     return (
         <ImageBackground
             source={{ uri: "https://images.unsplash.com/photo-1524947820859-81b71fe05edc?q=80&w=2833&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" }}
@@ -16,7 +17,7 @@ const BookingItemScreen: React.FC<NewProps> = ({ data }) => {
             <FlatList
                 data={data}
                 renderItem={({ item }) => (
-                    <BookingItem item={item} />
+                    <BookingItem item={item} removeItemFromList={removeFromAvailableRooms}/>
                 )}
                 keyExtractor={(item) => item.id}
             />

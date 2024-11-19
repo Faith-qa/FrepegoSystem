@@ -21,15 +21,10 @@ export const ALL_BOOKINGS = gql`
 }
 `
 export const CHECKOUT_BOOKING = gql`
-mutation CompleteBookingCheckout($bookingId: String!) {
-  bookingCheckout(bookingId: $bookingId) {
+mutation CheckoutBooking($bookingId: String!) {
+  checkoutBooking(bookingId: $bookingId) {
     booking {
       id
-      checkoutStatus
-      room {
-        id
-        isAvailable
-      }
     }
   }
 }
@@ -105,6 +100,7 @@ mutation CreateBooking($guestIds: [String!]!, $roomId: String!, $checkIn: String
         id
         roomNumber
         roomType {
+          id
           name
           pricePerNight
         }
@@ -127,6 +123,7 @@ query AvailableRooms($roomType: String!) {
     id
     roomNumber
     roomType {
+      id
       name
       description  # Added description here
       pricePerNight
