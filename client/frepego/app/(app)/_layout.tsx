@@ -11,15 +11,14 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import OrderCartModal from "@/componentsUi/OrderComponents/OrderCartModal";
 import {useQuery} from "@apollo/client";
 import {PENDING_ORDERS_QUERY} from "@/app/graph_queries";
-import {useEventSource} from "@/app/CartContext";
 import BookingCartModal from "@/componentsUi/BookingPage/BookingCartModal";
 import BookingCartContainer from "../../componentsUi/BookingPage/BookingCartContainer";
+import OrderCartContainer from "@/componentsUi/OrderComponents/OrderCartContainer";
 
 
 export default function AppLayout() {
     const { session, isLoading } = useSession();
     const [pendingOrders, setPendingOrders] = useState<any[]>([]);
-    const [openOrderCart, setOpenOrderCart] = useState(false);
     const [openBookingCart, setOpenBookingCart] = useState(false)
     const { data, error, loading } = useQuery(PENDING_ORDERS_QUERY);
 
@@ -41,9 +40,7 @@ export default function AppLayout() {
         return <Redirect href={"/sign-in"} />;
     }
 
-    const closeOrderCart = () => {
-        setOpenOrderCart(false);
-    };
+
 
     if (isLoading) {
         return <Text>Loading ...</Text>;
@@ -74,42 +71,9 @@ export default function AppLayout() {
                         drawerLabel: "Bar and Restaurant",
                         title: 'New order',
                         drawerLabelStyle: { color: "white" },
-                        headerRight: () => (
-                            <View style={{ flexDirection: "row", alignItems: "center", padding: 5, marginRight: 15 }}>
-                                <Text style={{ fontSize: 20, fontWeight: "normal", textAlign: 'center', color: "black" }}>Pending Orders</Text>
-                                {loading ? (
-                                    <ActivityIndicator size="small" color="black" style={{ marginLeft: 10 }} />
-                                ) : (
-                                    <MaterialCommunityIcons
-                                        name="cart"
-                                        size={24}
-                                        color="black"
-                                        style={{ marginLeft: 10 }}
-                                        onPress={() => setOpenOrderCart(true)}
-                                    />
-                                )}
-                                <View
-                                    style={{
-                                        position: "absolute",
-                                        right: -5,
-                                        top: -5,
-                                        borderRadius: 10,
-                                        width: 18,
-                                        height: 18,
-                                        justifyContent: "center",
-                                        alignItems: "center",
-                                    }}
-                                >
-                                    <Text style={{ color: "red", fontSize: 12 }}>{pendingOrders.length}</Text>
-                                </View>
-                                <OrderCartModal
-                                    orderCart={pendingOrders}
-                                    closeOrderCart={closeOrderCart}
-                                    openOrderCart={openOrderCart}
-                                    setOrderCart={setPendingOrders}
-                                />
-                            </View>
-                        ),
+                        headerRight: ()=>(
+                            <OrderCartContainer/>
+                        )
                     }}
                 />
                 <Drawer.Screen

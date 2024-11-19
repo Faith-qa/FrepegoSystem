@@ -4,6 +4,7 @@ import {Icon} from "react-native-elements";
 import {useMutation} from "@apollo/client";
 import {UPDATE_ORDER_STATUS} from "@/app/graph_queries";
 import s from "@/app/(app)/Tables/MenuItems/styles";
+import {useCart} from "@/app/CartContext";
 
 interface NewProps {
     createOrderView: boolean;
@@ -11,7 +12,6 @@ interface NewProps {
     order: any;
     closeCart?: () => void;
     command: "continue" | "complete the order";
-    setOrderCart?: React.Dispatch<React.SetStateAction<any[]>>
 }
 
 const OrderCreatedScreen: React.FC<NewProps> = ({
@@ -20,10 +20,10 @@ const OrderCreatedScreen: React.FC<NewProps> = ({
                                                     command,
                                                     closeCart,
                                                     order,
-                                                    setOrderCart
+
                                                 }) => {
     const [updatePendingOrder, {loading, error, data}] = useMutation(UPDATE_ORDER_STATUS);
-
+    const {orderCart,removeFromOrderCart} = useCart()
     if (!order) return null;
 
     const handleCompleteOrder = async () => {
@@ -32,11 +32,11 @@ const OrderCreatedScreen: React.FC<NewProps> = ({
                 variables: {
                     orderId: order.id
                 }
-            });
-            if (setOrderCart) {
-                setOrderCart(prevCart => prevCart.filter(item => item.id !== order.id));
-            }
-            closeCreatedOrder();
+            }).then((fetched_query)=>{
+                removeFromOrderCart(order.id)
+                closeCreatedOrder();
+            })
+
         } catch (err) {
             console.error("Error completing the order:", err);
         }

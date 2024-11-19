@@ -7,6 +7,7 @@ import React, {useEffect, useState} from "react";
 import OrderCreatedScreen from "@/componentsUi/OrderComponents/OrderCreatedScreen";
 import {useMutation} from "@apollo/client";
 import {CREATE_ORDER_MUTATION} from "@/app/graph_queries";
+import {useCart} from "@/app/CartContext";
 
 
 interface NewProps{
@@ -28,7 +29,7 @@ const CartModal:React.FC<NewProps> = ({
     const[orderView, setOrderView] = useState(false)
     const [orderItem, setOrderItem] = useState<any|null>(null)
     const [createOrder, {loading, error, data}] = useMutation(CREATE_ORDER_MUTATION)
-
+    const {orderCart, addToOrderCart} = useCart()
     //generate 3 random numbers
     useEffect(() => {
         if (data?.createOrder){
@@ -53,7 +54,10 @@ const CartModal:React.FC<NewProps> = ({
                 tableNumber: tableNumber,
                 orderItems,
             }
+        }).then((data)=>{
+            addToOrderCart(data.data.createOrder.order)
         })
+
         setOrderView(true)
         //alert(`order ${data.createOrder.order.orderNumber} successfully created`)
 
