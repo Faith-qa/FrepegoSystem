@@ -12,13 +12,14 @@ interface CsvModalProps {
     open: boolean;
     closeModal: () => void;
     tableName: string;
-    closeHandleDate: () => void;
+    //closeHandleDate: () => void;
 }
 
 const CsvModal: React.FC<CsvModalProps> = ({ open, startDate, closeModal, endDate, tableName }) => {
     const [isLoading, setIsLoading] = useState(false);
     const { loading, error, data } = useQuery(GET_DATA_FROM_TABLE, {
         variables: { tableName, startDate, endDate },
+        fetchPolicy: "no-cache", // Disables caching entirely
     });
 
     const flattenData = (tableName: string, data: any[]): any[] => {

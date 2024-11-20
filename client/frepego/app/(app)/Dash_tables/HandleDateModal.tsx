@@ -108,7 +108,7 @@ const HandleDateModal:React.FC<NewProps> = ({
                 >
                     <Text style={s.cartText}>Initiate csv Download</Text>
                 </TouchableOpacity>
-                <Csv_modal startDate={formatDate(from)} endDate={formatDate(to)} open={openCsvHandler} closeModal={closeCsvHandler} tableName={tableName}/>
+                <Csv_modal startDate={formatDate(from)} endDate={formatDate(to)} open={openCsvHandler} closeModal={closeCsvHandler} tableName={tableName} />
 
                 {/* Display a loading message or error message
                         {loading && <Text style={styles.loadingText}>Fetching data, please wait...</Text>}
