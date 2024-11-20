@@ -4,6 +4,8 @@ import React from "react";
 import {ApolloClient, InMemoryCache, ApolloProvider} from "@apollo/client";
 import cache from "@/app/cache";
 import {CartProvider} from "@/app/CartContext";
+import { Provider as PaperProvider } from "react-native-paper"; // Import the Paper Provider
+
 
 const myVariable = process.env.EXPO_PUBLIC_API_URL;
 console.log(`Proof that this loads: ${myVariable}`);
@@ -19,7 +21,9 @@ export default function Root(){
         <SessionProvider>
             <ApolloProvider client={client}>
                 <CartProvider>
+                    <PaperProvider>
                     <Slot />
+                    </PaperProvider>
                 </CartProvider>
             </ApolloProvider>
         </SessionProvider>

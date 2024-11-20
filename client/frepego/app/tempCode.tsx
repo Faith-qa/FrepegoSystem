@@ -1,130 +1,153 @@
-import React, {useState} from "react";
-import { useQuery } from "@apollo/client";
-import { Alert, Modal, Text, TouchableOpacity, View, ActivityIndicator, StyleSheet } from "react-native";
-import {GET_DATA_FROM_TABLE} from "@/app/graph_queries";
-import {json2csv} from "json-2-csv";
-import * as FileSystem from "expo-file-system";
+import React, { useEffect, useState, useMemo } from "react";
+import { Card, Icon } from "react-native-elements";
+import { DataTable } from "react-native-paper";
+import {
+    View,
+    Text,
+    ScrollView,
+    TouchableOpacity,
+    StyleSheet,
+    ActivityIndicator,
+} from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
+import s from "../app/(app)/Dash_tables/styles";
+import Csv_modal from "@/app/(app)/Dash_tables/csv_modal";
+import HandleDateModal from "@/app/(app)/Dash_tables/HandleDateModal";
 
 interface NewProps {
-    startDate: string;
-    endDate: string;
-    open: boolean;
-    closeModal: () => void;
+    items: any[];
     tableName: string;
-    closeHandleDate: ()=> void;
+    loading: boolean;
 }
 
-const CsvModal: React.FC<NewProps> = ({ open, startDate, closeModal, endDate, tableName }) => {
-    const[isLoading, setIsLoading] = useState(false)
-    const { loading, error, data } = useQuery(GET_DATA_FROM_TABLE, {
-        variables: { tableName, startDate, endDate },
-    });
+const DashTableScreen: React.FC<NewProps> = ({ items = [], tableName, loading }) => {
+    const [page, setPage] = useState<number>(0);
+    const [numberOfItemsPerPageList] = useState([2, 3, 4]);
+    const [itemsPerPage, onItemsPerPageChange] = useState(
+        Math.min(numberOfItemsPerPageList[0], items.length || 1)
+    );
+    const [opencsv, setOpencsv] = useState(false);
 
-    const handleDownload = async() => {
-        try{
+    useEffect(() => {
+        setPage(0);
+    }, [itemsPerPage]);
 
-            const csvData = json2csv(data.dataFromTable)
-            const fileUri = FileSystem.documentDirectory+'data.csv'
-            await FileSystem.writeAsStringAsync(fileUri, csvData, {
-                encoding: FileSystem.EncodingType.UTF8
-            })
-            console.log("csv file saved")
-            Alert.alert("CSV", "dowload successful")
-            closeModal()
+    // Close CSV Modal
+    const closecsv = () => {
+        setOpencsv(false);
+    };
 
-        }catch(error:any){
-            console.error('Error saving CSV:', error);
-            Alert.alert('Error', error.message);
+    // Calculate indices for pagination
+    const from = page * itemsPerPage;
+    const to = Math.min((page + 1) * itemsPerPage, items.length);
+
+    // Flatten object for dynamic table generation
+    const flattenObject = (
+        obj: Record<string, any>,
+        prefix = ""
+    ): Record<string, any> => {
+        return Object.keys(obj).reduce((acc, key) => {
+            const value = obj[key];
+            const newKey = prefix ? `${prefix}.${key}` : key;
+            if (typeof value === "object" && value !== null) {
+                Object.assign(acc, flattenObject(value, newKey));
+            } else {
+                acc[newKey] = value;
+            }
+            return acc;
+        }, {} as Record<string, any>);
+    };
+
+    // Memoized flattened items and headers
+    const flattenedItems = useMemo(
+        () => items.map((item) => flattenObject(item)),
+        [items]
+    );
+    const headers = useMemo(
+        () => (flattenedItems.length > 0 ? Object.keys(flattenedItems[0]) : []),
+        [flattenedItems]
+    );
+
+    // Handle page change
+    const handlePageChange = (newPage: number) => {
+        if (newPage >= 0 && newPage < Math.ceil(items.length / itemsPerPage)) {
+            setPage(newPage);
         }
+    };
 
+    // Handle items per page change
+    const handleItemsPerPageChange = (newItemsPerPage: number) => {
+        onItemsPerPageChange(newItemsPerPage);
     };
 
     return (
-        <Modal visible={open} animationType="slide" transparent={true}>
-            <View style={styles.modalContainer}>
-                <View style={styles.modalContent}>
-                    {loading && (
-                        <View style={styles.loadingContainer}>
-                            <ActivityIndicator size="large" color="#0000ff" />
-                            <Text style={styles.message}>Retrieving Data...</Text>
-                        </View>
-                    )}
-                    {error && <Text style={styles.error}>Error Retrieving Data: {error.message}</Text>}
-                    {data && (
-                        <Text style={styles.message}>
-                            Data is available. Click "Download" to initiate download.
-                        </Text>
-                    )}
+        <View style={s.container}>
+            {/* Table Header */}
+            <LinearGradient colors={["#1976D2", "#42A5F5"]} style={s.header}>
+                <Text style={s.headerText}>{tableName}</Text>
+                <TouchableOpacity onPress={() => setOpencsv(true)}>
+                    <Icon name={"add"} size={24} color={"white"} />
+                </TouchableOpacity>
+                <HandleDateModal open={opencsv} close={closecsv} tableName={tableName} />
+            </LinearGradient>
 
-                    {!error && <TouchableOpacity style={styles.downloadButton} onPress={handleDownload}>
-                        <Text style={styles.downloadButtonText}>Download</Text>
-                    </TouchableOpacity>}
-                    <TouchableOpacity style={styles.closeButton} onPress={closeModal}>
-                        <Text style={styles.closeButtonText}>Close</Text>
-                    </TouchableOpacity>
-                </View>
-            </View>
-        </Modal>
+            {/* Table Content */}
+            <ScrollView horizontal>
+                <DataTable style={s.card}>
+                    {loading ? (
+                        <View style={{ alignItems: "center", justifyContent: "center" }}>
+                            <ActivityIndicator size={"large"} color={"gray"} />
+                        </View>
+                    ) : (
+                        <>
+                            {/* Table Headers */}
+                            <DataTable.Header>
+                                {headers.map((header) => (
+                                    <DataTable.Title key={header} textStyle={{color:"#928E85"}}>{header}</DataTable.Title>
+                                ))}
+                            </DataTable.Header>
+
+                            {/* Table Rows */}
+                            {flattenedItems.slice(from, to).map((item, index) => (
+                                <DataTable.Row key={index}>
+                                    {headers.map((header) => (
+                                        <DataTable.Cell key={header} textStyle={{color:"#36454F"}}>
+                                            {item[header]?.toString() ?? ""}
+                                        </DataTable.Cell>
+                                    ))}
+                                </DataTable.Row>
+                            ))}
+
+                            {/* Pagination */}
+                            <DataTable.Pagination
+                                page={page}
+                                numberOfPages={Math.ceil(items.length / itemsPerPage)}
+                                onPageChange={handlePageChange}
+                                label={`${from + 1}-${to} of ${items.length}`}
+                                numberOfItemsPerPageList={numberOfItemsPerPageList}
+                                numberOfItemsPerPage={itemsPerPage}
+                                onItemsPerPageChange={handleItemsPerPageChange}
+                                showFastPaginationControls
+                                selectPageDropdownLabel={"Rows per page"}
+                            />
+                        </>
+                    )}
+                </DataTable>
+            </ScrollView>
+        </View>
     );
 };
 
-//export default CsvModal;
-
-// Styles
 const styles = StyleSheet.create({
-    modalContainer: {
-        flex: 1,
-        backgroundColor: "rgba(0,0,0,0.5)",
+    newOrderButton: {
+        padding: 10,
+        height: 60,
+        width: 190,
+        borderRadius: 15,
         justifyContent: "center",
         alignItems: "center",
-    },
-    modalContent: {
-        backgroundColor: "#fff",
-        padding: 20,
-        borderRadius: 10,
-        width: "80%",
-        alignItems: "center",
-    },
-    loadingContainer: {
-        alignItems: "center",
-        marginBottom: 20,
-    },
-    message: {
-        fontSize: 16,
-        color: "#333",
-        textAlign: "center",
-        marginVertical: 10,
-    },
-    error: {
-        fontSize: 16,
-        color: "red",
-        textAlign: "center",
-        marginVertical: 10,
-    },
-    downloadButton: {
-        backgroundColor: "#007bff",
-        padding: 10,
-        borderRadius: 5,
-        marginTop: 15,
-        width: "80%",
-        alignItems: "center",
-    },
-    downloadButtonText: {
-        color: "#fff",
-        fontWeight: "bold",
-        fontSize: 16,
-    },
-    closeButton: {
-        backgroundColor: "#d9534f",
-        padding: 10,
-        borderRadius: 5,
-        marginTop: 10,
-        width: "80%",
-        alignItems: "center",
-    },
-    closeButtonText: {
-        color: "#fff",
-        fontWeight: "bold",
-        fontSize: 16,
+        alignSelf: "center",
     },
 });
+
+//export default DashTableScreen;
